@@ -19,5 +19,5 @@ public class Categoria
 	private String nombre;
 	private String urlImagenCategoria;
 	private String color;
-	private List<Producto> lstProductos;
+	private List<Articulo> lstProductos;
 }

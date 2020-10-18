@@ -45,3 +45,59 @@ FROM dbo.direcciones d
 ;
 
 SELECT * from dbo.pedido_detalle pd 
+
+
+
+
+
+
+
+
+
+#
+# JDBC Properties
+#
+
+
+# PostgreSQL Heroku Unicentro
+spring.datasource.url=jdbc:sqlserver://138.185.137.170:14300;databaseName=pedidosbddE02
+spring.datasource.username=sa
+spring.datasource.password=tinigala
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+logging.level.org.hibernate.SQL=off
+
+
+
+# Indicar el DBMS
+spring.jpa.database: sqlserver
+
+# Indica si debe mostrar el log de las consultas sql ejecutadas
+spring.jpa.show-sql: true
+
+# Configurar Hibernate, crea el modelo de BD apartir de los entity o models
+# # spring.jpa.hibernate.ddl-auto = update
+
+#  mostrar sql 
+spring.jpa.properties.hibernate.format_sql=true
+
+
+# El dialecto SQL que hace que Hibernate genere un mejor SQL para la base de datos elegida
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.SQLServer2012Dialect
+
+# mostrar el error de sql
+logging.level.org.hibernate.SQL=DEBUG
+
+
+# Your desired user name
+spring.security.user.name=pandi
+# password
+spring.security.user.password=pandi
+# Role
+#spring.security.user.roles = USER
+
+#security.enable-csrf=false
+
+#logging.level.org.springframework.web=DEBUG
+
+server.port=7788
