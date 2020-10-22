@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ArticuloRepository extends JpaRepository<Articulo, String>
 {
     /**
-     * Método que permite obtener los productos seleccionados por acuatex
+     * Método que permite obtener los Articulos seleccionados por acuatex
      */
     @Query(value = 
                   "SELECT a.codigo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, 'XL' as talla " +
@@ -23,5 +23,5 @@ public interface ArticuloRepository extends JpaRepository<Articulo, String>
                   "where a.codigo in ('3002001002T12', '3002001002T14') " +
                   "and pa.cod_listaprecios = 01", nativeQuery = true
           )
-    List<Articulo> getAllProductos();
+    List<Articulo> getAllArticulos();
 }

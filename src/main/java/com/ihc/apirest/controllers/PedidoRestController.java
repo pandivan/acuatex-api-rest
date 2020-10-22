@@ -4,7 +4,7 @@
 
 // import com.ihc.apirest.models.Cliente;
 // import com.ihc.apirest.models.Pedido;
-// import com.ihc.apirest.models.ProductoPedido;
+// import com.ihc.apirest.models.ArticuloPedido;
 // import com.ihc.apirest.repository.PedidoRepository;
 
 // import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +41,11 @@
 //     {
 //         try 
 //         {
-//             //Se hace un set de pedido en todos los productos, ya que javascript no adminte estructuras ciclicas en el caso de [ProductoPedido] que contiene a [Pedido] 
-//             //y este a su vez contiene a [ProductoPedido], lo cual imposibilita enviar un entity de [Pedido] desde la App
-//             for (ProductoPedido productoPedido : pedido.getLstProductosPedido()) 
+//             //Se hace un set de pedido en todos los articulos, ya que javascript no adminte estructuras ciclicas en el caso de [ArticuloPedido] que contiene a [Pedido] 
+//             //y este a su vez contiene a [ArticuloPedido], lo cual imposibilita enviar un entity de [Pedido] desde la App
+//             for (ArticuloPedido articuloPedido : pedido.getLstArticulosPedido()) 
 //             {
-//                 productoPedido.setPedido(pedido);    
+//                 articuloPedido.setPedido(pedido);    
 //             }
 
 //             //Este metodo creará una pedido

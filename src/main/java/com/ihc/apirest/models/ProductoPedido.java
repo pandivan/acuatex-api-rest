@@ -23,17 +23,17 @@
 // @ToString
 // @Entity
 // @Table(schema="dimension")
-// public class ProductoPedido
+// public class ArticuloPedido
 // {
 //     @Id
 // 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-// 	private Long idProductoPedido;
+// 	private Long idArticuloPedido;
 // 	private int cantidad;
 // 	private Double valor;
 
-// 	@JoinColumn(name = "idProducto")
+// 	@JoinColumn(name = "idArticulo")
 //     @ManyToOne(optional = false)
-// 	private Producto producto;
+// 	private Articulo articulo;
 
 // 	@JoinColumn(name = "idPedido")
 // 	@ManyToOne(optional = false)

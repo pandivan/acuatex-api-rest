@@ -1,50 +1,50 @@
-// package com.ihc.apirest.models;
+package com.ihc.apirest.models;
 
-// import lombok.AllArgsConstructor;
-// import lombok.Data;
-// import lombok.NoArgsConstructor;
-// import lombok.ToString;
+import java.util.Date;
 
-// import java.util.Date;
-// import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-// import javax.persistence.CascadeType;
-// import javax.persistence.Entity;
-// import javax.persistence.GeneratedValue;
-// import javax.persistence.GenerationType;
-// import javax.persistence.Id;
-// import javax.persistence.OneToMany;
-// import javax.persistence.Table;
-// import javax.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 
-// @Data
-// @AllArgsConstructor
-// @NoArgsConstructor
-// @ToString
-// @Entity
-// @Table(schema="dimension")
-// public class Cliente
-// {
-// 	@Id
-// 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-// 	private Long idCliente;
-// 	private Long idBarrio;
-// 	private String cedula;
-// 	private String nombre;
-// 	private String telefono;
-// 	private String direccion;
-// 	private String email;
-// 	private Date fechaNacimiento;
-// 	private String sexo;
-// 	private String tipoCliente;
-// 	private String password;
-// 	private String barrio;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
+@Table(schema="dbo", name = "clientes_registro")
+public class Cliente
+{
+	@Id
+	private String cedula;
+	private String nombres;
+	private String codProvincia;
+	private String codCiudad;
+	private String direccion;
+	private String correo;
+	private String telefono;
+	private String clave;
+	private Date fechaNacimiento;
+	private String direccionEntrega;
+	private String latitud;
+	private String longitud;
+	private int estado;
 
 
-// 	public Cliente(Long idCliente) 
-// 	{
-// 		this.idCliente = idCliente;
-// 	}
-// }
+	//Pendiente por definir en tiny
+	// private String sexo;
+	// private String pais;
+	// private String politicas;
+
+
+	public Cliente(String cedula) 
+	{
+		this.cedula = cedula;
+	}
+}

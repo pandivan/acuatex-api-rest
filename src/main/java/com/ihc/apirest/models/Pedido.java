@@ -38,5 +38,5 @@
 // 	private Cliente cliente;
 
 // 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-// 	private List<ProductoPedido> lstProductosPedido;
+// 	private List<ArticuloPedido> lstArticulosPedido;
 // }

@@ -18,24 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticuloRestController 
 {
   @Autowired
-  ArticuloRepository productoRepository;
+  ArticuloRepository articuloRepository;
 
 
 
   /**
-   * Método que permite obtener un producto según su Id
+   * Método que permite obtener un articulo según su Id
    * 
-   * @param idProducto, Id Producto con el cual se buscara el producto en BD
-   * @return Producto encontrado
+   * @param idArticulo, Id Articulo con el cual se buscara el articulo en BD
+   * @return Articulo encontrado
    */
-  @GetMapping(value = "/productos")
-  public ResponseEntity<List<Articulo>> findAllCategoriasProductos() 
+  @GetMapping(value = "/articulos")
+  public ResponseEntity<List<Articulo>> findAllCategoriasArticulos() 
   {
     try 
     {
-      List<Articulo> lstProductos = productoRepository.getAllProductos();
+      List<Articulo> lstArticulos = articuloRepository.getAllArticulos();
 
-      return new ResponseEntity<List<Articulo>>(lstProductos, HttpStatus.OK);
+      return new ResponseEntity<List<Articulo>>(lstArticulos, HttpStatus.OK);
     } 
     catch (Exception e) 
     {

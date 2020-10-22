@@ -21,7 +21,7 @@ import lombok.ToString;
 public class Articulo
 {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String codigo;
 	private String grupo;
 	private String nombre;
