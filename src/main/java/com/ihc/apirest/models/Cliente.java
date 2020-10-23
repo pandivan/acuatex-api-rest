@@ -24,13 +24,13 @@ public class Cliente
 	@Id
 	private String cedula;
 	private String nombres;
-	private String codProvincia;
-	private String codCiudad;
+	private String codprovincia;
+	private String codciudad;
 	private String direccion;
 	private String correo;
 	private String telefono;
 	private String clave;
-	private Date fechaNacimiento;
+	private Date fecha;
 	private String direccionEntrega;
 	private String latitud;
 	private String longitud;

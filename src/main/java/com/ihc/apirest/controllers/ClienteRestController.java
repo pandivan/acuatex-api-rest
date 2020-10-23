@@ -50,7 +50,7 @@ public class ClienteRestController
             //Este metodo creará un usuario en BD para la app de [mi-bario-app]
             Cliente clienteBD = clienteRepository.save(cliente);
 
-            return new ResponseEntity<Cliente>(clienteBD, HttpStatus.CREATED);
+            return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
 		} 
         catch (Exception e) 
         {
@@ -73,7 +73,7 @@ public class ClienteRestController
             //Este metodo creará un cliente en BD
             clienteRepository.save(cliente);
             
-            return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
+            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		} 
         catch (Exception e) 
         {
