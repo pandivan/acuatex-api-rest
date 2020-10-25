@@ -22,13 +22,15 @@ SELECT SUBSTRING('3002011002T10', CHARINDEX('T', '3002011002T10')+1, 5), '300201
 /******+ ARTICULOS ******/
 
 SELECT  
-SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla, a.fecha 
+a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as nuevo_codigo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla, a.fecha 
 from dbo.articulos a
 inner join dbo.precios_articulos pa on pa.cod_articulo = a.codigo
-where a.codigo in ('3012005002TL','3012005002TM','3012005002TS','3012005002TXL','3012008001TL', '3004001001TS', '3004001001TXL', '3005005082T18','3005005083T10','3005005083T2', '3007002001T12M','3007002001T18M','3007002001T24', '3003001002T06','3003001003T04','3003001005T08', '3002001001T08','3002001001T10','3002001001T12')
+where 1=1
+and a.codigo in ('3012005002TL','3012005002TM','3012005002TS','3012005002TXL','3012008001TL', '3004001001TS', '3004001001TXL', '3005005082T18','3005005083T10','3005005083T2', '3007002001T12M','3007002001T18M','3007002001T24', '3003001002T06','3003001003T04','3003001005T08', '3002001001T08','3002001001T10','3002001001T12')
 and pa.cod_listaprecios = 01
 order by 1
 ;
+
 
 
 
@@ -51,8 +53,9 @@ where 1=1
 
 --provincias
 SELECT * from ciudades c2
-where codigo_provincia = 20 
---and codigo_ciudad = ''
+where 1=1
+and codigo_provincia in (01,02)
+and (codigo_ciudad = '' or codigo_ciudad = '001')
 ;
 
 
@@ -64,7 +67,7 @@ values ('13072207', 'ivan hernandez', '20', '002', 'valle lili', 'ivan.hernandez
 
 SELECT * from dbo.clientes_registro cr ;
 
---TRUNCATE table dbo.clientes_registro ;
+TRUNCATE table dbo.clientes_registro ;
 
 
 
@@ -88,7 +91,19 @@ pais =
 fechaNacimiento = ''
 
 
-
+	cedula
+	nombres
+	codprovincia
+	codciudad
+	direccion
+	correo
+	telefono
+	clave
+fecha
+	direccion_entrega
+latitud
+longitud
+estado
 
 
 SELECT * from pedido_encabezado;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ClienteRepository extends JpaRepository<Cliente, String>
 {
     /**
-     * Método que permite validar si el cliente exist
+     * Método que permite validar si el cliente existe
      * @param correo Correo del cliente
      * @param clave Clave del Cliente
      * @return Cliente
