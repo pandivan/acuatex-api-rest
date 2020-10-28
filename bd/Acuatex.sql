@@ -69,7 +69,10 @@ SELECT * from dbo.clientes_registro cr ;
 
 TRUNCATE table dbo.clientes_registro ;
 
+true
+false
 
+ivan.hernandez.coral@gmail.com
 
 
 cedula); --ruc
@@ -142,3 +145,6 @@ imbabura--> ibarra--> zuleta
 
 
 
+
+
+ 

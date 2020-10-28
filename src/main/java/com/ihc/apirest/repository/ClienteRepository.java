@@ -11,6 +11,15 @@ import org.springframework.stereotype.Repository;
 public interface ClienteRepository extends JpaRepository<Cliente, String>
 {
     /**
+     * Método que permite validar la clave del  cliente
+     * @param cedula Cedula del cliente
+     * @param clave Clave del Cliente
+     * @return True si el cliente existe, en caso contrario False
+     */
+    boolean existsByCedulaAndClave(String cedula, String clave);
+
+
+    /**
      * Método que permite validar si el cliente existe
      * @param correo Correo del cliente
      * @param clave Clave del Cliente

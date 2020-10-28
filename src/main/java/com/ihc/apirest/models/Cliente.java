@@ -2,9 +2,11 @@ package com.ihc.apirest.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +26,10 @@ public class Cliente
 	@Id
 	private String cedula;
 	private String nombres;
-	private String codprovincia;
-	private String codciudad;
+	@Column(name="codprovincia")
+	private String codProvincia;
+	@Column(name="codciudad")
+	private String codCiudad;
 	private String direccion;
 	private String correo;
 	private String telefono;
@@ -36,6 +40,12 @@ public class Cliente
 	private String longitud;
 	private int estado;
 
+	@Transient
+	private String claveIngresada;
+	@Transient
+	private String nuevaClave;
+	@Transient
+	private String nuevoCorreo;
 
 	//Pendiente por definir en tiny
 	// private String sexo;

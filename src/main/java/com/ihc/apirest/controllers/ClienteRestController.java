@@ -37,7 +37,7 @@ public class ClienteRestController
    * @return Cliente creado
    */
   @PostMapping(value="/cliente")
-  public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente)
+  public ResponseEntity<Cliente> registrarCliente(@RequestBody Cliente cliente)
   {
     try 
     {
@@ -62,46 +62,89 @@ public class ClienteRestController
 
 
 
-    /**
-   * Método que permite actualizar un cliente en BD
-   * @param cliente, Cliente actualizar
-   * @return Cliente actualizado
-   */
-  @PutMapping("/cliente")
-  public ResponseEntity<Boolean> actualizarCliente(@RequestBody Cliente cliente)
-  {
-    try 
-    {
-      //Este metodo creará un cliente en BD
-      clienteRepository.save(cliente);
-      
-      return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-    } 
-    catch (Exception e) 
-    {
-      return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    }
-  
-    
-  
   /**
    * Método que permite obtener un cliente según el correo
    * @param cliente, Cliente que contiente el correo con el cual se buscara al cliente en BD
    * @return Cliente encontrado
    */
-  @PostMapping(value = "/cliente_validar")
+  @PostMapping(value = "/cliente/info")
   public ResponseEntity<Cliente> validarCliente(@RequestBody Cliente cliente) 
   {
     try
     {
       Cliente clienteBD = clienteRepository.findByCorreoAndClave(cliente.getCorreo(), cliente.getClave());
+
+      if(null == clienteBD)
+      {
+        return new ResponseEntity<Cliente>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+      }
       
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     }
     catch (Exception e) 
     {
       return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite actualizar un cliente en BD
+   * @param cliente, Cliente actualizar
+   * @return Cliente actualizado
+   */
+  @PutMapping("/cliente")
+  public ResponseEntity<Cliente> actualizarCliente(@RequestBody Cliente cliente)
+  {
+    try 
+    {
+      Cliente clienteActualizado = null;
+
+      boolean isExisteCliente = clienteRepository.existsByCedulaAndClave(cliente.getCedula(), cliente.getClaveIngresada());
+
+      if(isExisteCliente)
+      {
+        if(null != cliente.getNuevaClave())
+        {
+          cliente.setClave(cliente.getNuevaClave());
+        }
+
+        if(null != cliente.getNuevoCorreo())
+        {
+          cliente.setCorreo(cliente.getNuevoCorreo());
+        }
+
+        clienteActualizado = clienteRepository.save(cliente);
+      }
+
+      return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.OK);
+    } 
+    catch (Exception e) 
+    {
+      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite actualizar un cliente en BD
+   * @param cliente, Cliente actualizar
+   * @return True si el cliente fue actualizado, en caso contrario false
+   */
+  @PutMapping("/cliente/informacion")
+  public ResponseEntity<Boolean> actualizarInformacionCliente(@RequestBody Cliente cliente)
+  {
+    try 
+    {
+      clienteRepository.save(cliente);
+
+      return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    } 
+    catch (Exception e) 
+    {
+      return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
