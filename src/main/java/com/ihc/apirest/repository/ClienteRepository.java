@@ -20,6 +20,14 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>
 
 
     /**
+     * Método que permite validar si un correo ya está registrado
+     * @param correo Correo a validar
+     * @return True si el correo existe, en caso contrario False
+     */
+    boolean existsByCorreo(String correo);
+
+
+    /**
      * Método que permite validar si el cliente existe
      * @param correo Correo del cliente
      * @param clave Clave del Cliente

@@ -65,14 +65,13 @@ insert into dbo.clientes_registro(cedula,nombres,codprovincia,codciudad,direccio
 values ('13072207', 'ivan hernandez', '20', '002', 'valle lili', 'ivan.hernandez.coral@gmail.com', '3014317636', '12345', getdate(), 'calle 45', null, null, 1)
 ;
 
-SELECT * from dbo.clientes_registro cr ;
+SELECT * from dbo.clientes_registro cr order by 1;
 
-TRUNCATE table dbo.clientes_registro ;
+--TRUNCATE table dbo.clientes_registro ;
 
-true
-false
+UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', clave= '12345' where cedula = '12121212';
 
-ivan.hernandez.coral@gmail.com
+
 
 
 cedula); --ruc
@@ -145,6 +144,3 @@ imbabura--> ibarra--> zuleta
 
 
 
-
-
- 

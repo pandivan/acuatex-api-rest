@@ -63,8 +63,8 @@ public class ClienteRestController
 
 
   /**
-   * Método que permite obtener un cliente según el correo
-   * @param cliente, Cliente que contiente el correo con el cual se buscara al cliente en BD
+   * Método que permite obtener un cliente según el correo y clave
+   * @param cliente, Cliente que contiente el correo y clave con el cual se buscara al cliente en BD
    * @return Cliente encontrado
    */
   @PostMapping(value = "/cliente/info")
@@ -90,17 +90,18 @@ public class ClienteRestController
 
 
   /**
-   * Método que permite actualizar un cliente en BD
+   * Método que permite actualizar los datos de acceso de un cliente en BD
    * @param cliente, Cliente actualizar
    * @return Cliente actualizado
    */
-  @PutMapping("/cliente")
-  public ResponseEntity<Cliente> actualizarCliente(@RequestBody Cliente cliente)
+  @PutMapping("/cliente/datos_acceso")
+  public ResponseEntity<Cliente> actualizarDatosAccesoCliente(@RequestBody Cliente cliente)
   {
     try 
     {
       Cliente clienteActualizado = null;
 
+      
       boolean isExisteCliente = clienteRepository.existsByCedulaAndClave(cliente.getCedula(), cliente.getClaveIngresada());
 
       if(isExisteCliente)
@@ -112,13 +113,23 @@ public class ClienteRestController
 
         if(null != cliente.getNuevoCorreo())
         {
+          boolean isExisteCorreo = clienteRepository.existsByCorreo(cliente.getNuevoCorreo());
+  
+          //Se valida si el correo enviado 
+          if(isExisteCorreo)
+          {
+            return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.CREATED);
+          }
+
           cliente.setCorreo(cliente.getNuevoCorreo());
         }
 
         clienteActualizado = clienteRepository.save(cliente);
+
+        return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.OK);
       }
 
-      return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.OK);
+      return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.NO_CONTENT);
     } 
     catch (Exception e) 
     {
@@ -129,12 +140,12 @@ public class ClienteRestController
 
 
   /**
-   * Método que permite actualizar un cliente en BD
+   * Método que permite actualizar todos los datos de un cliente en BD
    * @param cliente, Cliente actualizar
    * @return True si el cliente fue actualizado, en caso contrario false
    */
-  @PutMapping("/cliente/informacion")
-  public ResponseEntity<Boolean> actualizarInformacionCliente(@RequestBody Cliente cliente)
+  @PutMapping("/cliente")
+  public ResponseEntity<Boolean> actualizarCliente(@RequestBody Cliente cliente)
   {
     try 
     {
