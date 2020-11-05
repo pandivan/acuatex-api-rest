@@ -1,11 +1,12 @@
 package com.ihc.apirest.models;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,6 @@ public class PedidoDetalle
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer secuencia;
-    // private String nro_pedido;
     private String codArticulo;
     private String codPromo;
     private String umedida;
@@ -38,7 +38,7 @@ public class PedidoDetalle
     private String detalle;
 
     @JoinColumn(name = "nro_pedido")
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	// @JsonIgnore
+	@ManyToOne(optional = false)
+	@JsonIgnore
     private Pedido pedido;
 }
