@@ -72,7 +72,7 @@ SELECT * from dbo.clientes_registro cr order by 1;
 UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', clave= '12345' where cedula = '12121212';
 
 
-
+SD618680-->sd
 
 cedula); --ruc
 nombre);
@@ -108,15 +108,53 @@ longitud
 estado
 
 
+
+
 SELECT * from pedido_encabezado;
 
 
 SELECT * from pedido_detalle;
 
 
+"nro_pedido": "",
+"fecha": "",
+"hora": "",
+"fechaEnvio": "",
+"horaEnvio": "",
+"cliente": "",
+"sucursal": "",
+"ruc": "",
+"nombre": "",
+"direccion": "",
+"correo": "",
+"telefono": "",
+"codprovincia": "",
+"codciudad": "",
+"direccion_entrega": "",
+"telefono_entrega": "",
+"codprovincia_entrega": "",
+"codciudad_entrega": "",
+"dias_plazo": "",
+"detalle": "",
+"estado": "",
+"vendedor": "",
+"fechaDespacho": "",
 
 
 
+
+"nro_pedido": "",
+"secuencia": "",
+"cod_articulo": "",
+"cod_promo": "",
+"umedida": "",
+"cantidad": "",
+"bonificacion": "",
+"precio_venta": "",
+"porc_descuento": "",
+"ice": "",
+"iva": "",
+"detalle: "";
 
 
 /* Validar bien si no tengo q mirar las tablas para nada
