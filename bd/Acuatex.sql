@@ -22,7 +22,8 @@ SELECT SUBSTRING('3002011002T10', CHARINDEX('T', '3002011002T10')+1, 5), '300201
 /******+ ARTICULOS ******/
 
 SELECT  
-a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as nuevo_codigo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla, a.fecha 
+--a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as nuevo_codigo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla, a.fecha 
+a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_articulo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla 
 from dbo.articulos a
 inner join dbo.precios_articulos pa on pa.cod_articulo = a.codigo
 where 1=1
@@ -30,8 +31,6 @@ and a.codigo in ('3012005002TL','3012005002TM','3012005002TS','3012005002TXL','3
 and pa.cod_listaprecios = 01
 order by 1
 ;
-
-
 
 
 
@@ -62,7 +61,7 @@ and (codigo_ciudad = '' or codigo_ciudad = '001')
 
 
 insert into dbo.clientes_registro(cedula,nombres,codprovincia,codciudad,direccion,correo,telefono,clave,fecha,direccion_entrega,latitud,longitud,estado)
-values ('13072207', 'ivan hernandez', '20', '002', 'valle lili', 'ivan.hernandez.coral@gmail.com', '3014317636', '12345', getdate(), 'calle 45', null, null, 1)
+values ('13072207', 'ivan hernandez', '01', '002', 'valle lili', 'ivan.hernandez.coral@gmail.com', '3014317636', '12345', getdate(), 'calle 45', null, null, 1)
 ;
 
 SELECT * from dbo.clientes_registro cr order by 1;
@@ -109,52 +108,23 @@ estado
 
 
 
-
-SELECT * from pedido_encabezado;
-
-
-SELECT * from pedido_detalle;
+TRUNCATE table pedido_encabezado;
+TRUNCATE table pedido_detalle;
 
 
-"nro_pedido": "",
-"fecha": "",
-"hora": "",
-"fechaEnvio": "",
-"horaEnvio": "",
-"cliente": "",
-"sucursal": "",
-"ruc": "",
-"nombre": "",
-"direccion": "",
-"correo": "",
-"telefono": "",
-"codprovincia": "",
-"codciudad": "",
-"direccion_entrega": "",
-"telefono_entrega": "",
-"codprovincia_entrega": "",
-"codciudad_entrega": "",
-"dias_plazo": "",
-"detalle": "",
-"estado": "",
-"vendedor": "",
-"fechaDespacho": "",
+SELECT * 
+from pedido_encabezado p
+inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
+;
+
+SELECT * 
+from pedido_encabezado p;
 
 
+SELECT * 
+from pedido_detalle pd
+;
 
-
-"nro_pedido": "",
-"secuencia": "",
-"cod_articulo": "",
-"cod_promo": "",
-"umedida": "",
-"cantidad": "",
-"bonificacion": "",
-"precio_venta": "",
-"porc_descuento": "",
-"ice": "",
-"iva": "",
-"detalle: "";
 
 
 /* Validar bien si no tengo q mirar las tablas para nada

@@ -45,33 +45,26 @@ public class ArticuloRestController
 
       for (Articulo articulo : lstArticulos) 
       {
-        try
+        if(mapArticulos.containsKey(articulo.getCodigoArticulo()))
         {
-          if(mapArticulos.containsKey(articulo.getCodigoArticulo()))
-          {
-            Articulo articuloBD = mapArticulos.get(articulo.getCodigoArticulo());
+          Articulo articuloBD = mapArticulos.get(articulo.getCodigoArticulo());
 
-            articuloBD.getLstTallas().add(articulo.getTalla());
-  
-            mapArticulos.put(articulo.getCodigoArticulo(), articuloBD);
-          }
-          else
-          {
-            Set<String> lstTallas = new HashSet<String>();
-            lstTallas.add(articulo.getTalla());
-            
-            articulo.setTalla(null);
-            articulo.setLstTallas(lstTallas);
+          articuloBD.getLstTallas().add(articulo.getTalla());
 
-            articulo.setCodigo(articulo.getCodigoArticulo());
-            articulo.setCodigoArticulo(null);
-
-            mapArticulos.put(articulo.getCodigo(), articulo);
-          }
+          mapArticulos.put(articulo.getCodigoArticulo(), articuloBD);
         }
-        catch(Exception ex)
+        else
         {
-          System.out.println("ArticuloRestController.findAllCategoriasArticulos()");
+          Set<String> lstTallas = new HashSet<String>();
+          lstTallas.add(articulo.getTalla());
+          
+          articulo.setTalla(null);
+          articulo.setLstTallas(lstTallas);
+
+          articulo.setCodigo(articulo.getCodigoArticulo());
+          articulo.setCodigoArticulo(null);
+
+          mapArticulos.put(articulo.getCodigo(), articulo);
         }
       }
 
