@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface CiudadRepository extends JpaRepository<Ciudad, String> 
 {
 	
-	@Query(value = "SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, c.codigo_ciudad, c.nombre from ciudades c order by c.nombre", nativeQuery = true)
+	@Query(value = "SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, c.codigo_ciudad, c.nombre from ciudades c order by c.codigo_provincia, c.codigo_ciudad, c.nombre", nativeQuery = true)
 	List<Ciudad> getAllCiudades();
 
 }

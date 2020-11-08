@@ -89,12 +89,12 @@ public class PedidoRestController
    * Método que permite obtener todos los pedidos PENDIENTES
    * @return Listado de pedidos
    */
-  @GetMapping(value = "/pedido/{cliente}")
-  public ResponseEntity<List<Pedido>> getAllPedidos(@PathVariable("cliente") Integer cliente) 
+  @GetMapping(value = "/pedido/{cedula}")
+  public ResponseEntity<List<Pedido>> getAllPedidos(@PathVariable("cliente") Integer cedula) 
   {
     try
     {
-      List<Pedido> lstPedidos = pedidoRepository.findByCliente(cliente);
+      List<Pedido> lstPedidos = pedidoRepository.findByCliente(cedula);
 
       return new ResponseEntity<List<Pedido>>(lstPedidos, HttpStatus.OK);
     }

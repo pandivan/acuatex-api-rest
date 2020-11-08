@@ -17,9 +17,9 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>
 {
   /**
    * Método que permite actualizar el pedido
-   * @param idTienda Id de la tienda que tomo el pedido
-   * @param idEstado Id del estado Aceptado
-   * @param idPedido Id del pedido
+   * @param estado Id del estado 
+   * @param nroPedido Id del pedido
+   * @param cliente Id del que hizo pedido
    */
   @Transactional
   @Modifying

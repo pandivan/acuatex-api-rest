@@ -51,19 +51,12 @@ where 1=1
 
 
 
---Provincias
-SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, CASE c.codigo_ciudad WHEN '' THEN c.codigo_ciudad ELSE (c.codigo_provincia + '-' + c.codigo_ciudad) END codigo_ciudad, c.nombre 
-from ciudades c
-where 1=1
-and (c.codigo_ciudad = '')
-order by c.codigo_provincia, c.codigo_ciudad, c.nombre 
-;
 
 --Ciudades
 SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, CASE c.codigo_ciudad WHEN '' THEN c.codigo_ciudad ELSE (c.codigo_provincia + '-' + c.codigo_ciudad) END codigo_ciudad, c.nombre 
 from ciudades c
 where 1=1
-and codigo_provincia in (01)
+and c.codigo_provincia in ('04')
 --and (codigo_ciudad = '' or codigo_ciudad = '001')
 order by c.codigo_provincia, c.codigo_ciudad, c.nombre 
 ;
@@ -81,6 +74,11 @@ SELECT * from dbo.clientes_registro cr order by 1;
 --TRUNCATE table dbo.clientes_registro ;
 
 UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', clave= '12345' where cedula = '12121212';
+
+DELETE from dbo.clientes_registro where cedula = 'c';
+
+
+
 
 
 SD618680-->sd
