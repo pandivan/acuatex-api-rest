@@ -38,7 +38,7 @@ public class PedidoRestController
    * @return True si el pedido fue creado, en caso contrario False
    */
   @PostMapping(value="/pedido")
-  public ResponseEntity<Boolean> registrarPedido(@RequestBody Pedido pedido)
+  public ResponseEntity<String> registrarPedido(@RequestBody Pedido pedido)
   {
     try 
     {
@@ -50,13 +50,13 @@ public class PedidoRestController
       }
 
       //Este metodo creará una pedido
-      pedidoRepository.save(pedido);
+      Pedido pedidoBD = pedidoRepository.save(pedido);
 
-      return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
+      return new ResponseEntity<String>(pedidoBD.getNroPedido(), HttpStatus.CREATED);
     } 
     catch (Exception e) 
     {
-      return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -90,7 +90,7 @@ public class PedidoRestController
    * @return Listado de pedidos
    */
   @GetMapping(value = "/pedido/{cedula}")
-  public ResponseEntity<List<Pedido>> getAllPedidos(@PathVariable("cliente") Integer cedula) 
+  public ResponseEntity<List<Pedido>> getAllPedidos(@PathVariable("cedula") Integer cedula) 
   {
     try
     {

@@ -25,39 +25,39 @@ import lombok.ToString;
 @Table(schema="dbo", name = "pedido_encabezado")
 public class Pedido
 {
-    @Id
+  @Id
 	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String nroPedido;
-    private Date fecha;
-    private String hora;
-    @Column(name="fechaenvio")
-    private Date fechaEnvio;
-    @Column(name="horaenvio")
-    private String horaEnvio;
-    private Integer cliente;
-    private Integer sucursal;
-    private String ruc;
-    private String nombre;
-    private String direccion;
-    private String correo;
-    private String telefono;
-    @Column(name="codprovincia")
-    private String codProvincia;
-    @Column(name="codciudad")
-    private String codCiudad;
-    private String direccionEntrega;
-    private String telefonoEntrega;
-    @Column(name="codprovincia_entrega")
-    private String codProvinciaEntrega;
-    @Column(name="codciudad_entrega")
-    private String codCiudadEntrega;
-    private Integer diasPlazo;
-    private String detalle;
-    private Integer estado;
-    private String vendedor;
-    @Column(name="fechadespacho")
-    private Date fechaDespacho;
+  private Date fecha;
+  private String hora;
+  @Column(name="fechaenvio")
+  private Date fechaEnvio;
+  @Column(name="horaenvio")
+  private String horaEnvio;
+  private Integer cliente;
+  private Integer sucursal;
+  private String ruc;
+  private String nombre;
+  private String direccion;
+  private String correo;
+  private String telefono;
+  @Column(name="codprovincia")
+  private String codProvincia;
+  @Column(name="codciudad")
+  private String codCiudad;
+  private String direccionEntrega;
+  private String telefonoEntrega;
+  @Column(name="codprovincia_entrega")
+  private String codProvinciaEntrega;
+  @Column(name="codciudad_entrega")
+  private String codCiudadEntrega;
+  private Integer diasPlazo;
+  private String detalle;
+  private Integer estado;
+  private String vendedor;
+  @Column(name="fechadespacho")
+  private Date fechaDespacho;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private List<PedidoDetalle> lstPedidoDetalle;
+  @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+  private List<PedidoDetalle> lstPedidoDetalle;
 }

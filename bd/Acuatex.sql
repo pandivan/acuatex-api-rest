@@ -56,7 +56,7 @@ where 1=1
 SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, CASE c.codigo_ciudad WHEN '' THEN c.codigo_ciudad ELSE (c.codigo_provincia + '-' + c.codigo_ciudad) END codigo_ciudad, c.nombre 
 from ciudades c
 where 1=1
-and c.codigo_provincia in ('04')
+and c.codigo_provincia in ('09')
 --and (codigo_ciudad = '' or codigo_ciudad = '001')
 order by c.codigo_provincia, c.codigo_ciudad, c.nombre 
 ;
@@ -64,14 +64,11 @@ order by c.codigo_provincia, c.codigo_ciudad, c.nombre
 
 
 
-
-insert into dbo.clientes_registro(cedula,nombres,codprovincia,codciudad,direccion,correo,telefono,clave,fecha,direccion_entrega,latitud,longitud,estado)
-values ('13072207', 'ivan hernandez', '01', '002', 'valle lili', 'ivan.hernandez.coral@gmail.com', '3014317636', '12345', getdate(), 'calle 45', null, null, 1)
-;
-
 SELECT * from dbo.clientes_registro cr order by 1;
 
 --TRUNCATE table dbo.clientes_registro ;
+
+
 
 UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', clave= '12345' where cedula = '12121212';
 
@@ -159,6 +156,6 @@ imbabura--> ibarra--> zuleta
 
 
 
-
+SD622967 -> caso sp
 
 
