@@ -34,4 +34,11 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>
    * @return Listado de pedidos asociados al cliente
    */
   List<Pedido> findByCliente(Integer cliente);
+
+
+  @Query(value = "SELECT MAX(nro_pedido) from pedido_encabezado", nativeQuery = true)
+  String maxNroPedido();
+
+  @Query(value = "SELECT MAX(secuencia) from pedido_detalle", nativeQuery = true)
+  Integer maxSecuencia();
 }

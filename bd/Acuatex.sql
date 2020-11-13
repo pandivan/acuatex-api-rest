@@ -124,7 +124,7 @@ from pedido_encabezado p
 inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
 ;
 
-SELECT * 
+SELECT *
 from pedido_encabezado p;
 
 
