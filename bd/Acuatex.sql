@@ -132,6 +132,19 @@ SELECT *
 from pedido_detalle pd
 ;
 
+SELECT  
+pd.nro_pedido, pd.secuencia, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as cod_articulo, pd.cantidad, pd.precio_venta, pd.iva, pd.detalle
+from dbo.articulos a
+inner join pedido_detalle pd on pd.cod_articulo = a.codigo
+where 1=1
+order by 1 desc
+;
+
+
+SELECT * from dbo.articulos a where a.codigo in ('3003001003TL','3012008001TL','3005005082TL');
+
+
+
 
 
 /* Validar bien si no tengo q mirar las tablas para nada

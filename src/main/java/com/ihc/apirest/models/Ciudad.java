@@ -1,7 +1,5 @@
 package com.ihc.apirest.models;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,11 +17,8 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(schema="dbo", name = "ciudades")
-public class Ciudad implements Serializable
+public class Ciudad
 {
-  private static final long serialVersionUID = 1L;
-
-  // @EmbeddedId CiudadPK id;
   @Id
   private String id;
 	private String codigoPais;
@@ -43,23 +38,3 @@ public class Ciudad implements Serializable
       return idCiudad;
   }
 }
-
-
-
-// @Data
-// @AllArgsConstructor
-// @NoArgsConstructor
-// @ToString
-// @Embeddable
-// class CiudadPK implements Serializable 
-// {
-//   private static final long serialVersionUID = 1L;
-//   private String codigoCiudad_;
-//   private String codigoProvincia_;
-
-
-
-  
-// }
-
-

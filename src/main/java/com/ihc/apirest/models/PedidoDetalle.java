@@ -25,22 +25,28 @@ import lombok.ToString;
 @Table(schema="dbo", name = "pedido_detalle")
 public class PedidoDetalle
 {
-    @Id
-    // @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer secuencia;
-    private String codArticulo;
-    private String codPromo;
-    private String umedida;
-    private Double cantidad;
-    private Double bonificacion;
-    private Double precioVenta;
-    private Double porcDescuento;
-    private Double ice;
-    private Double iva;
-    private String detalle;
+  @Id
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer secuencia;
+  private String codArticulo;
+  private String codPromo;
+  private String umedida;
+  private Double cantidad;
+  private Double bonificacion;
+  private Double precioVenta;
+  private Double porcDescuento;
+  private Double ice;
+  private Double iva;
+  private String detalle;
 
-    @JoinColumn(name = "nro_pedido")
+  @JoinColumn(name = "nro_pedido")
 	@ManyToOne(optional = false)
 	@JsonIgnore
-    private Pedido pedido;
+  private Pedido pedido;
+
+
+  public String getCodArticulo() 
+  {
+    return codArticulo.substring(0,(codArticulo.indexOf("T") + 1));
+  }
 }
