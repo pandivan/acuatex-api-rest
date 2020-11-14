@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,6 +40,9 @@ public class PedidoDetalle
   private Double iva;
   private String detalle;
 
+  @Transient
+  private String talla;
+
   @JoinColumn(name = "nro_pedido")
 	@ManyToOne(optional = false)
 	@JsonIgnore
@@ -48,5 +52,10 @@ public class PedidoDetalle
   public String getCodArticulo() 
   {
     return codArticulo.substring(0,(codArticulo.indexOf("T") + 1));
+  }
+
+  public String getTalla() 
+  {
+    return codArticulo.substring(codArticulo.indexOf("T") + 1);
   }
 }
