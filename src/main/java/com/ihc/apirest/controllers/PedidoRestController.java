@@ -43,9 +43,9 @@ public class PedidoRestController
     try 
     {
       //Esto es temporal mientras averiguo como es la secuencia para pedido y detallepedido
-      String nroPedidoBD = pedidoRepository.maxNroPedido();
+      Long nroPedidoBD = pedidoRepository.maxNroPedido();
 
-      Long nroPedido = Long.parseLong(null == nroPedidoBD ? "1000" : (nroPedidoBD + 1));
+      Long nroPedido = null == nroPedidoBD ? 1000 : nroPedidoBD + 1;
       pedido.setNroPedido(nroPedido.toString());
 
       Integer secuenciaBD = pedidoRepository.maxSecuencia();
