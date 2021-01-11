@@ -14,9 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface ArticuloRepository extends JpaRepository<Articulo, String>
 {
 
-  /**
-   * Método que permite obtener los Articulos seleccionados por acuatex
-   */
   @Query(value = 
               "SELECT a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_articulo, a.grupo, a.nombre, a.nombre as descripcion, 1 as cantidad, pa.precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla " +
               "from dbo.articulos a " +

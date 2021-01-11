@@ -3,11 +3,16 @@ package com.ihc.apirest.controllers;
 import java.text.SimpleDateFormat;
 
 import com.ihc.apirest.models.Cliente;
-import com.ihc.apirest.repository.ClienteRepository;
+import com.ihc.apirest.service.ClienteService;
+import com.ihc.apirest.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,29 +24,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1")
 @CrossOrigin("*")
 public class ClienteRestController 
 {
   @Autowired
-  ClienteRepository clienteRepository;
+  ClienteService clienteService;
+
+  @Autowired
+  JwtService jwtService;
+
+  @Autowired
+  AuthenticationManager authenticationManager;
+
 
 
   SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
   
 
-
   /**
    * Método que permite crear un nuevo cliente en BD
-   * @param cliente, Cliente a crear
+   * @param cliente a crear
    * @return Cliente creado
    */
-  @PostMapping(value="/cliente")
+  @PostMapping(value="/signup")
   public ResponseEntity<Cliente> registrarCliente(@RequestBody Cliente cliente)
   {
     try 
     {
-      Cliente clienteExistente = clienteRepository.findByCorreo(cliente.getCorreo());
+      Cliente clienteExistente = clienteService.getClienteByCorreo(cliente.getCorreo());
 
       //Se valida que el correo del cliente no este registrado en la plataforma
       if(null != clienteExistente)
@@ -50,7 +61,7 @@ public class ClienteRestController
       }
 
       //Este metodo creará un usuario en BD para la app de [mi-bario-app]
-      Cliente clienteBD = clienteRepository.save(cliente);
+      Cliente clienteBD = clienteService.registrarCliente(cliente); 
 
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     } 
@@ -63,27 +74,31 @@ public class ClienteRestController
 
 
   /**
-   * Método que permite obtener un cliente según el correo y clave
-   * @param cliente, Cliente que contiente el correo y clave con el cual se buscara al cliente en BD
+   * Método que permite validar un cliente según su correo y clave
+   * @param cliente que contiente el correo y clave a validar
    * @return Cliente encontrado
    */
-  @PostMapping(value = "/cliente/info")
-  public ResponseEntity<Cliente> validarCliente(@RequestBody Cliente cliente) 
+  @PostMapping(value = "/login")
+  public ResponseEntity<Cliente> login(@RequestBody Cliente cliente) 
   {
     try
     {
-      Cliente clienteBD = clienteRepository.findByCorreoAndClave(cliente.getCorreo(), cliente.getClave());
+      //El correo es el username de la aplicacion
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getCorreo(), cliente.getClave()));
+        
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      if(null == clienteBD)
-      {
-        return new ResponseEntity<Cliente>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
-      }
+      String jwt = jwtService.generarToken(authentication);
+
+      Cliente clienteBD = (Cliente) authentication.getPrincipal();
+
+      clienteBD.setToken(jwt);
       
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     }
     catch (Exception e) 
     {
-      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<Cliente>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
   }
 
@@ -94,7 +109,7 @@ public class ClienteRestController
    * @param cliente, Cliente actualizar
    * @return Cliente actualizado
    */
-  @PutMapping("/cliente/datos_acceso")
+  @PutMapping("/clientes/datos_acceso")
   public ResponseEntity<Cliente> actualizarDatosAccesoCliente(@RequestBody Cliente cliente)
   {
     try 
@@ -102,7 +117,7 @@ public class ClienteRestController
       Cliente clienteActualizado = null;
 
       
-      boolean isExisteCliente = clienteRepository.existsByCedulaAndClave(cliente.getCedula(), cliente.getClaveIngresada());
+      boolean isExisteCliente = clienteService.existeClienteByCedulaAndClave(cliente);
 
       if(isExisteCliente)
       {
@@ -113,9 +128,9 @@ public class ClienteRestController
 
         if(null != cliente.getNuevoCorreo())
         {
-          boolean isExisteCorreo = clienteRepository.existsByCorreo(cliente.getNuevoCorreo());
+          boolean isExisteCorreo = clienteService.existeClienteByCorreo(cliente);
   
-          //Se valida si el correo enviado 
+          //Se valida si el correo enviado existe
           if(isExisteCorreo)
           {
             return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.CREATED);
@@ -124,7 +139,7 @@ public class ClienteRestController
           cliente.setCorreo(cliente.getNuevoCorreo());
         }
 
-        clienteActualizado = clienteRepository.save(cliente);
+        clienteActualizado = clienteService.registrarCliente(cliente);
 
         return new ResponseEntity<Cliente>(clienteActualizado, HttpStatus.OK);
       }
@@ -144,12 +159,12 @@ public class ClienteRestController
    * @param cliente, Cliente actualizar
    * @return True si el cliente fue actualizado, en caso contrario false
    */
-  @PutMapping("/cliente")
+  @PutMapping("/clientes")
   public ResponseEntity<Boolean> actualizarCliente(@RequestBody Cliente cliente)
   {
     try 
     {
-      clienteRepository.save(cliente);
+      clienteService.registrarCliente(cliente);
 
       return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     } 

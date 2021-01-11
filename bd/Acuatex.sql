@@ -71,6 +71,7 @@ UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', 
 DELETE from dbo.clientes_registro where cedula = 'c';
 
 
+ALTER TABLE [dbo].[clientes_registro] ALTER COLUMN clave varchar(400);
 
 
 
@@ -115,6 +116,7 @@ estado
 TRUNCATE table pedido_encabezado;
 TRUNCATE table pedido_detalle;
 
+SELECT MAX(CAST(nro_pedido AS numeric)) from pedido_encabezado;
 
 SELECT * 
 from pedido_encabezado p
@@ -260,7 +262,8 @@ if('S' = descodificado, RGB(255,0,0),Black())
  * 
  ********************************************************************************************************************/
 SELECT *
-from pedido_encabezado p 
+from pedido_encabezado p
+--where cliente = '13072207'
 order by p.cliente ;
 
 
@@ -268,7 +271,12 @@ SELECT *
 from pedido_detalle pd
 ;
 
-UPDATE pedido_encabezado set fecha = getdate()-7 where nro_pedido = '1000';
+UPDATE pedido_encabezado set codprovincia = '17', codciudad = '001'
+--fecha = getdate()-7 
+where 1=1
+--and nro_pedido = '1000'
+and cliente = '12121212'
+;
 
 select getdate();
 
@@ -287,7 +295,6 @@ p.fechaDespacho as fecha_despacho,
 p.estado
 from dbo.pedido_encabezado p
 inner join dbo.pedido_detalle pd on pd.nro_pedido = p.nro_pedido
-in
 ;
 
 
@@ -302,3 +309,23 @@ in
 
 
 
+
+
+select
+        cliente0_.cedula as cedula1_1_,
+        cliente0_.clave as clave2_1_,
+        cliente0_.codciudad as codciuda3_1_,
+        cliente0_.codprovincia as codprovi4_1_,
+        cliente0_.correo as correo5_1_,
+        cliente0_.direccion as direccio6_1_,
+        cliente0_.direccion_entrega as direccio7_1_,
+        cliente0_.estado as estado8_1_,
+        cliente0_.fecha as fecha9_1_,
+        cliente0_.latitud as latitud10_1_,
+        cliente0_.longitud as longitu11_1_,
+        cliente0_.nombres as nombres12_1_,
+        cliente0_.telefono as telefon13_1_ 
+    from
+        dbo.clientes_registro cliente0_ 
+    --where cliente0_.correo='1' and cliente0_.clave='pandi'
+;

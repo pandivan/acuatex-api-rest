@@ -8,40 +8,42 @@ import java.util.Map;
 import java.util.Set;
 
 import com.ihc.apirest.models.Articulo;
-import com.ihc.apirest.repository.ArticuloRepository;
+import com.ihc.apirest.service.ArticuloService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1")
 @CrossOrigin("*")
 public class ArticuloRestController 
 {
   @Autowired
-  ArticuloRepository articuloRepository;
+  ArticuloService articuloService;
 
 
 
   /**
-   * Método que permite obtener un articulo según su Id
-   * 
-   * @param idArticulo, Id Articulo con el cual se buscara el articulo en BD
-   * @return Articulo encontrado
+   * Método que permite obtener todos los articulos con sus categorías
+   * @return
    */
+  @PreAuthorize("hasRole('PANDI')")
   @GetMapping(value = "/articulos")
-  public ResponseEntity<List<Articulo>> findAllCategoriasArticulos() 
+  public ResponseEntity<List<Articulo>> getAllCategoriasArticulos() 
   {
     try 
     {
       Map<String, Articulo> mapArticulos = new HashMap<String, Articulo>();
 
-      List<Articulo> lstArticulos = articuloRepository.getAllArticulos();
+      List<Articulo> lstArticulos = articuloService.getAllArticulos();
 
       for (Articulo articulo : lstArticulos) 
       {

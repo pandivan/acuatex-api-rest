@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ihc.apirest.models.Pedido;
 import com.ihc.apirest.models.PedidoDetalle;
-import com.ihc.apirest.repository.PedidoRepository;
+import com.ihc.apirest.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,34 +21,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1")
 @CrossOrigin("*")
 public class PedidoRestController 
 {
   @Autowired
-  PedidoRepository pedidoRepository;
+  PedidoService pedidoService;
 
   static final Integer ID_ESTADO_PENDIENTE = 100;
   static final Integer ID_ESTADO_ACEPTADO = 101;
 
 
+
   /**
    * Método que permite crear un nuevo pedido
-   * @param pedido, Pedido a crear
+   * @param pedido a crear
    * @return True si el pedido fue creado, en caso contrario False
    */
-  @PostMapping(value="/pedido")
+  @PostMapping(value="/pedidos")
   public ResponseEntity<String> registrarPedido(@RequestBody Pedido pedido)
   {
     try 
     {
       //Esto es temporal mientras averiguo como es la secuencia para pedido y detallepedido
-      Long nroPedidoBD = pedidoRepository.maxNroPedido();
+      Long nroPedidoBD = pedidoService.maxNroPedido();
 
       Long nroPedido = null == nroPedidoBD ? 1000 : nroPedidoBD + 1;
       pedido.setNroPedido(nroPedido.toString());
 
-      Integer secuenciaBD = pedidoRepository.maxSecuencia();
+      Integer secuenciaBD = pedidoService.maxSecuencia();
       Integer secuencia = (null == secuenciaBD ? 1000 : secuenciaBD);
 
 
@@ -60,8 +61,7 @@ public class PedidoRestController
         pedidoDetalle.setSecuencia(++secuencia);
       }
 
-      //Este metodo creará una pedido
-      Pedido pedidoBD = pedidoRepository.save(pedido);
+      Pedido pedidoBD = pedidoService.registrarPedido(pedido);
 
       return new ResponseEntity<String>(pedidoBD.getNroPedido(), HttpStatus.CREATED);
     } 
@@ -74,17 +74,17 @@ public class PedidoRestController
 
 
   /**
- * Método que permite actualizar el estado de un pedido
- * @param pedido, Pedido actualizar
- * @return True si el pedido fue actualizado, en caso contrario False
- */
-  @PutMapping("/pedido")
+   * Método que permite actualizar el estado de un pedido
+   * @param pedido actualizar
+   * @return True si el pedido fue actualizado, en caso contrario False
+   */
+  @PutMapping("/pedidos")
   public ResponseEntity<Boolean> actualizarEstadoPedido(@RequestBody Pedido pedido)
   {
     try 
     {
       //Actualizando el estado del pedido
-      pedidoRepository.actualizarEstadoPedido(pedido.getEstado(), pedido.getNroPedido(), pedido.getCliente());
+      pedidoService.actualizarEstadoPedido(pedido);
       
       return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
     } 
@@ -97,15 +97,16 @@ public class PedidoRestController
 
 
   /**
-   * Método que permite obtener todos los pedidos PENDIENTES
-   * @return Listado de pedidos
+   * Método que permite obtener todos los pedidos según el cliente
+   * @param cedula del cliente
+   * @return Listado de pedidos del cliente
    */
-  @GetMapping(value = "/pedido/{cedula}")
-  public ResponseEntity<List<Pedido>> getAllPedidos(@PathVariable("cedula") Integer cedula) 
+  @GetMapping(value = "/pedidos/{cedula}")
+  public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("cedula") Integer cedula) 
   {
     try
     {
-      List<Pedido> lstPedidos = pedidoRepository.findByCliente(cedula);
+      List<Pedido> lstPedidos = pedidoService.getAllPedidosByCliente(cedula);
 
       return new ResponseEntity<List<Pedido>>(lstPedidos, HttpStatus.OK);
     }
