@@ -9,6 +9,7 @@ import com.ihc.apirest.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class PedidoRestController
    * @param pedido a crear
    * @return True si el pedido fue creado, en caso contrario False
    */
+  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @PostMapping(value="/pedidos")
   public ResponseEntity<String> registrarPedido(@RequestBody Pedido pedido)
   {
@@ -78,6 +80,7 @@ public class PedidoRestController
    * @param pedido actualizar
    * @return True si el pedido fue actualizado, en caso contrario False
    */
+  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @PutMapping("/pedidos")
   public ResponseEntity<Boolean> actualizarEstadoPedido(@RequestBody Pedido pedido)
   {
@@ -101,6 +104,7 @@ public class PedidoRestController
    * @param cedula del cliente
    * @return Listado de pedidos del cliente
    */
+  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @GetMapping(value = "/pedidos/{cedula}")
   public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("cedula") Integer cedula) 
   {

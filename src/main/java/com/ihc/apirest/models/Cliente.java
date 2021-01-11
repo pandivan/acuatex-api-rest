@@ -77,7 +77,7 @@ public class Cliente implements UserDetails
 	public Collection<? extends GrantedAuthority> getAuthorities() 
 	{
 		List<GrantedAuthority> lstRoles = new ArrayList<>();
-    lstRoles.add(new SimpleGrantedAuthority(Rol.ROLE_PANDI.name()));
+    lstRoles.add(new SimpleGrantedAuthority(Rol.ROLE_ACUATEX_CLIENTE.name()));
     
 		return lstRoles;
 	}
