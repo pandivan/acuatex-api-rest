@@ -28,7 +28,6 @@ import lombok.ToString;
 public class Pedido
 {
   @Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
 	private String nroPedido;
   private Date fecha;
   private String hora;

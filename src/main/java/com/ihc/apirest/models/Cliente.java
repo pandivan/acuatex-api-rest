@@ -41,6 +41,7 @@ public class Cliente implements UserDetails
 	private String direccion;
 	private String correo;
 	private String telefono;
+	@Column(name = "clave", updatable = false)
 	private String clave;
 	private Date fecha;
 	private String direccionEntrega;
@@ -56,22 +57,22 @@ public class Cliente implements UserDetails
 	private String nuevoCorreo;
 	@Transient
 	private String token;
-	@Transient
-	private Collection<? extends GrantedAuthority> authorities;
-
-
-	// @Enumerated(EnumType.STRING)
-	// private Rol rol;
 
 	// Pendiente por definir en tiny
 	// private String sexo;
 	// private String pais;
 	// private String politicas;
 
+
+
+
 	public Cliente(String cedula) 
 	{
 		this.cedula = cedula;
 	}
+
+
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() 

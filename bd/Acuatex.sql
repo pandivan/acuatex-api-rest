@@ -58,15 +58,33 @@ order by c.codigo_provincia, c.codigo_ciudad, c.nombre
 ;
 
 
+$2a$10$hPirNesLXP5AaJWj2t.ZROmuRIBl0sOvCWNKi7jJvih6Wa4MqXdPu
 
 
-SELECT * from dbo.clientes_registro cr order by 1;
+SELECT * from dbo.clientes_registro cr 
+where 1=1
+and cr.cedula = '13072211' 
+order by 1;
 
 --TRUNCATE table dbo.clientes_registro ;
 
 
+3002002001T02
 
-UPDATE dbo.clientes_registro set correo = 'luisa.hernandez.cardenas@gmail.com', clave= '12345' where cedula = '12121212';
+
+UPDATE dbo.clientes_registro 
+set correo = 'ivan.hernandez.coral11@gmail.com', 
+clave= '$2a$10$hPirNesLXP5AaJWj2t.ZROmuRIBl0sOvCWNKi7jJvih6Wa4MqXdPu',
+direccion = 'dir',
+telefono = '22222',
+direccion_entrega = 'dir entrega',
+latitud = 'lt',
+cedula = '130722111'
+where cedula = '13072211';
+
+
+
+
 
 DELETE from dbo.clientes_registro where cedula = 'c';
 
@@ -119,12 +137,14 @@ TRUNCATE table pedido_detalle;
 SELECT MAX(CAST(nro_pedido AS numeric)) from pedido_encabezado;
 
 SELECT * 
-from pedido_encabezado p
+from dbo.pedido_encabezado p
 inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
 ;
 
 SELECT *
-from pedido_encabezado p;
+from pedido_encabezado p
+--where p.nro_pedido = '1010'
+;
 
 
 SELECT * 
@@ -136,11 +156,28 @@ pd.nro_pedido, pd.secuencia, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) 
 from dbo.articulos a
 inner join pedido_detalle pd on pd.cod_articulo = a.codigo
 where 1=1
+and
 order by 1 desc
 ;
 
 
-SELECT * from dbo.articulos a where a.codigo in ('3003001003TL','3012008001TL','3005005082TL');
+--Producto al cual le colocamos especificaciones y rayas para separar nombre de la descripcion
+3002002001T02
+3002002001T02
+
+
+SELECT * from dbo.articulos a where a.codigo like '%3002002001T02%';
+
+
+SELECT * from dbo.factura_encabezado fe;
+
+
+SELECT * from dbo.facturas_pendientes fp;
+
+SELECT * from dbo.factura_detalle fd 
+--where fd.codigo like '%3002002001T02%'
+;
+
 
 
 
@@ -218,7 +255,7 @@ correo,
 telefono,
 direccion_entrega
 from dbo.clientes_registro
---where cedula = '13072207'
+where cedula = '1'
 ;
 
 
@@ -261,9 +298,11 @@ if('S' = descodificado, RGB(255,0,0),Black())
  * HECHOS PEDIDOS
  * 
  ********************************************************************************************************************/
-SELECT *
+SELECT p.nro_pedido, p.estado, p.cliente 
 from pedido_encabezado p
---where cliente = '13072207'
+where 1=1
+--and cliente = '13072207'
+and nro_pedido = '1010'
 order by p.cliente ;
 
 

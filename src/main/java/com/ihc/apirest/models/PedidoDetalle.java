@@ -27,7 +27,6 @@ import lombok.ToString;
 public class PedidoDetalle
 {
   @Id
-  // @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer secuencia;
   private String codArticulo;
   private String codPromo;

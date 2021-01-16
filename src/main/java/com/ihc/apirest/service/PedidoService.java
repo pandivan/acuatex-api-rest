@@ -22,20 +22,11 @@ public class PedidoService
    * Método que permite obtener la secuencia de la tabla pedido
    * @return Id de la secuencia
    */
-  public Long maxNroPedido()
+  public String maxNroPedido()
   {
     return pedidoRepository.maxNroPedido();
   }
-
-
-  /**
-   * Método que permite obtener la secuencia de la tabla detallepedido
-   * @return Id de la secuencia
-   */
-  public Integer maxSecuencia()
-  {
-    return pedidoRepository.maxSecuencia();
-  }
+  
 
 
   /**

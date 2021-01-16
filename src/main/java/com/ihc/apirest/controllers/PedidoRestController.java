@@ -1,5 +1,6 @@
 package com.ihc.apirest.controllers;
 
+import java.util.Formatter;
 import java.util.List;
 
 import com.ihc.apirest.models.Pedido;
@@ -9,15 +10,14 @@ import com.ihc.apirest.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 
@@ -39,28 +39,41 @@ public class PedidoRestController
    * @param pedido a crear
    * @return True si el pedido fue creado, en caso contrario False
    */
-  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
+  // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @PostMapping(value="/pedidos")
   public ResponseEntity<String> registrarPedido(@RequestBody Pedido pedido)
   {
     try 
     {
       //Esto es temporal mientras averiguo como es la secuencia para pedido y detallepedido
-      Long nroPedidoBD = pedidoService.maxNroPedido();
+      String nroPedidoBD = pedidoService.maxNroPedido();
 
-      Long nroPedido = null == nroPedidoBD ? 1000 : nroPedidoBD + 1;
-      pedido.setNroPedido(nroPedido.toString());
+      if(null == nroPedidoBD)
+      {
+        /**
+         * 000000   = No se que es jaja
+         * 98       = Es el codigo de usuario web
+         * 0000001  = Es el id incremental del pedido
+         */
+        
+        nroPedidoBD = "000000980000001";
+      }
+      else
+      {
+        Formatter formatter = new Formatter();
+        nroPedidoBD = "00000098".concat(formatter.format("%07d", Long.parseLong(nroPedidoBD.substring(8)) + 1).toString());
+      }
+      
+      pedido.setNroPedido(nroPedidoBD);
 
-      Integer secuenciaBD = pedidoService.maxSecuencia();
-      Integer secuencia = (null == secuenciaBD ? 1000 : secuenciaBD);
-
+      int secuencia = 1;
 
       //Se hace un set de pedido en todos los pedidos detalles, ya que javascript no adminte estructuras ciclicas en el caso de [PedidoDetalle] que contiene a [Pedido] 
       //y este a su vez contiene a [PedidoDetalle], lo cual imposibilita enviar un entity de [Pedido] desde la Web
       for (PedidoDetalle pedidoDetalle : pedido.getLstPedidoDetalle()) 
       {
         pedidoDetalle.setPedido(pedido);
-        pedidoDetalle.setSecuencia(++secuencia);
+        pedidoDetalle.setSecuencia(secuencia++);
       }
 
       Pedido pedidoBD = pedidoService.registrarPedido(pedido);
@@ -80,7 +93,7 @@ public class PedidoRestController
    * @param pedido actualizar
    * @return True si el pedido fue actualizado, en caso contrario False
    */
-  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
+  // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @PutMapping("/pedidos")
   public ResponseEntity<Boolean> actualizarEstadoPedido(@RequestBody Pedido pedido)
   {
@@ -104,7 +117,7 @@ public class PedidoRestController
    * @param cedula del cliente
    * @return Listado de pedidos del cliente
    */
-  @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
+  // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @GetMapping(value = "/pedidos/{cedula}")
   public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("cedula") Integer cedula) 
   {

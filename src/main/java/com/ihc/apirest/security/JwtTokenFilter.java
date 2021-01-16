@@ -5,7 +5,6 @@ package com.ihc.apirest.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -17,6 +16,7 @@ import com.ihc.apirest.service.JwtService;
 import com.ihc.apirest.service.UserDetailsServiceImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class JwtTokenFilter extends OncePerRequestFilter 
 {
@@ -40,9 +40,16 @@ public class JwtTokenFilter extends OncePerRequestFilter
       if (token != null && jwtService.validateToken(token)) 
       {
         String userName = jwtService.getUserNameFromToken(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        // Permite obtener el cliente desde la BD a traves del [user-name] 
+        // UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        // UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        /**
+         * Creamos un array de [Authorities] vacio para indicarle a los CONTROLLER que no necesitamos roles para acceder a las rutas, 
+         * en caso de necesitar roles debemos activar las lineas de arriba y adcionar @PreAuthorize("hasRole('ACUATEX_CLIENTE')") en el metodo del contralador
+         */
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(auth);
       }
     } 

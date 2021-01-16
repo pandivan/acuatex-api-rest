@@ -40,13 +40,13 @@ public class ClienteService
 
 
   /**
-   * Método que permite validar si un cliente existe según su cedula y clave
-   * @param cliente a validar
-   * @return true si existe el cliente, en caso contrario false
+   * Método que permite registrar un cliente en BD
+   * @param cliente a registrar
+   * @return Cliente registrado
    */
-  public boolean existeClienteByCedulaAndClave(Cliente cliente) 
+  public Integer actualizarDatosAccesoCliente(Cliente cliente) 
   {
-    return clienteRepository.existsByCedulaAndClave(cliente.getCedula(), cliente.getClaveIngresada());
+    return clienteRepository.actualizarDatosAccesoCliente(cliente.getCorreo(), cliente.getClave(), cliente.getCedula());
   }
 
 

@@ -20,7 +20,7 @@ import lombok.ToString;
 @Entity
 public class Articulo
 {
-    @Id
+  @Id
 	private String codigo;
 	private String codigoArticulo;
 	private String grupo;
