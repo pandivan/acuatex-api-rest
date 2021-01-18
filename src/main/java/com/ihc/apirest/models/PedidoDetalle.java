@@ -1,9 +1,8 @@
 package com.ihc.apirest.models;
 
 import javax.persistence.Entity;
-// import javax.persistence.GeneratedValue;
-// import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -23,6 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
+@IdClass(PedidoDetallePK.class)
 @Table(schema="dbo", name = "pedido_detalle")
 public class PedidoDetalle
 {
@@ -42,6 +42,7 @@ public class PedidoDetalle
   @Transient
   private String talla;
 
+  @Id
   @JoinColumn(name = "nro_pedido")
 	@ManyToOne(optional = false)
 	@JsonIgnore

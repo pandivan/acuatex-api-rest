@@ -32,6 +32,7 @@ public class PedidoRestController
   static final Integer ID_ESTADO_PENDIENTE = 100;
   static final Integer ID_ESTADO_ACEPTADO = 101;
 
+  private Formatter formatter = new Formatter();
 
 
   /**
@@ -60,7 +61,6 @@ public class PedidoRestController
       }
       else
       {
-        Formatter formatter = new Formatter();
         nroPedidoBD = "00000098".concat(formatter.format("%07d", Long.parseLong(nroPedidoBD.substring(8)) + 1).toString());
       }
       
