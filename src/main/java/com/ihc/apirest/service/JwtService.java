@@ -6,7 +6,6 @@ import java.util.Date;
 import com.ihc.apirest.models.Cliente;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -31,20 +30,20 @@ public class JwtService
   
   /**
    * Método que permite crear un token a partir de la autenticación del cliente (login y clave)
-   * @param authentication contiene al cliente
+   * @param cliente que contiene roles y el user name
    * @return Token
    */
-  public String generarToken(Authentication authentication) 
+  public String generarToken(Cliente cliente) 
   {
-    Cliente cliente = (Cliente) authentication.getPrincipal();
+    // Cliente cliente = (Cliente) authentication.getPrincipal();
     Collection<? extends GrantedAuthority> authorities = cliente.getAuthorities();
 
     return Jwts.builder()
                         .setSubject(cliente.getUsername())
                         .claim(AUTHORITIES, authorities)
                         .setIssuedAt(new Date())
-                        // .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                        .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                        .setExpiration(new Date(System.currentTimeMillis() + 10000))
+                        // .setExpiration(new Date(new Date().getTime() + expiration * 1000))
                         .signWith(SignatureAlgorithm.HS512, secretKey)
                         .compact();
   }
@@ -79,23 +78,23 @@ public class JwtService
     } 
     catch (MalformedJwtException e) 
     {
-      // logger.error("token mal formado");
+      System.out.println("token mal formado");
     } 
     catch (UnsupportedJwtException e) 
     {
-      // logger.error("token no soportado");
+      System.out.println("token no soportado");
     } 
     catch (ExpiredJwtException e) 
     {
-      // logger.error("token expirado");
+      System.out.println("token expirado");
     } 
     catch (IllegalArgumentException e) 
     {
-      // logger.error("token vacío");
+      System.out.println("token vacío");
     } 
     catch (SignatureException e) 
     {
-      // logger.error("fail en la firma");
+      System.out.println("fail en la firma");
     }
     return false;
   }

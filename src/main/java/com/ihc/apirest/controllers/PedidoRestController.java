@@ -46,7 +46,7 @@ public class PedidoRestController
   {
     try 
     {
-      //Esto es temporal mientras averiguo como es la secuencia para pedido y detallepedido
+      //Obteniendo el numero maximo del pedido para genear a partir de este el nuevo ID del pedido
       String nroPedidoBD = pedidoService.maxNroPedido();
 
       if(null == nroPedidoBD)
@@ -66,14 +66,12 @@ public class PedidoRestController
       
       pedido.setNroPedido(nroPedidoBD);
 
-      int secuencia = 1;
 
       //Se hace un set de pedido en todos los pedidos detalles, ya que javascript no adminte estructuras ciclicas en el caso de [PedidoDetalle] que contiene a [Pedido] 
       //y este a su vez contiene a [PedidoDetalle], lo cual imposibilita enviar un entity de [Pedido] desde la Web
       for (PedidoDetalle pedidoDetalle : pedido.getLstPedidoDetalle()) 
       {
         pedidoDetalle.setPedido(pedido);
-        pedidoDetalle.setSecuencia(secuencia++);
       }
 
       Pedido pedidoBD = pedidoService.registrarPedido(pedido);

@@ -8,7 +8,7 @@ from dbo.grupo_articulos ga
 
 
 
-/******+ ARTICULOS ******/
+/******* ARTICULOS ******/
 
 SELECT  
 --distinct SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_articulo
@@ -17,18 +17,15 @@ a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_articulo,
 from dbo.articulos a
 inner join dbo.precios_articulos pa on pa.cod_articulo = a.codigo
 where 1=1
---and a.codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T04','3003001005T04','3005004044T18','3005004045T10','3005004047T3','3007002001T12M','3007002001T18M','3007002001T24','3007002001T6-9M','3007002002T12M','3012004001T1','3012005002TL','3012008001TXL','3008007001T14','3004001054TS','3004001058TXL','3005006028T9','3005005086T24','3012008002TXL','3007002066T18','3007002066T12','3007002066T18','3007002066T24','3007002067T12','3007002002T18M','3007002002T24','3007002067T18','3007002067T24','3007002067T6-9','3012005002TM','3012005002TS','3012005002TXL','3012008001TL','3012008001TM','3012008001TS','3012008002TL','3012008002TM','3012008002TS','3004001054TM','3004001054TS','3004001058TL','3004001058TM','3004001058TS')
+and a.codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T04','3003001005T04','3005004044T18','3005004045T10','3005004047T3','3007002001T12M','3007002001T18M','3007002001T24','3007002001T6-9M','3007002002T12M','3012004001T1','3012005002TL','3012008001TXL','3008007001T14','3004001054TS','3004001058TXL','3005006028T9','3005005086T24','3012008002TXL','3007002066T18','3007002066T12','3007002066T18','3007002066T24','3007002067T12','3007002002T18M','3007002002T24','3007002067T18','3007002067T24','3007002067T6-9','3012005002TM','3012005002TS','3012005002TXL','3012008001TL','3012008001TM','3012008001TS','3012008002TL','3012008002TM','3012008002TS','3004001054TM','3004001054TS','3004001058TL','3004001058TM','3004001058TS') 
 --and a.codigo like '%3004001058T%'
 and pa.cod_listaprecios = 01
-and pa.precio <> 0
+--and pa.precio <> 0
 --and a.grupo in ('DAMA')
 --and a.nombre like '%BUSO HOMBRE AMAC0002%'
-and a.codigo like '%.%'
+--and a.codigo like '%.%'
 order by 1
 ;
-
-
-SELECT MAX(nro_pedido) from pedido_encabezado;
 
 
 
@@ -48,7 +45,7 @@ where 1=1
 
 
 
---Ciudades
+/******* CIUDADES ******/
 SELECT (c.codigo_provincia+c.codigo_ciudad) as id, c.codigo_pais, c.codigo_provincia, CASE c.codigo_ciudad WHEN '' THEN c.codigo_ciudad ELSE (c.codigo_provincia + '-' + c.codigo_ciudad) END codigo_ciudad, c.nombre 
 from ciudades c
 where 1=1
@@ -58,43 +55,75 @@ order by c.codigo_provincia, c.codigo_ciudad, c.nombre
 ;
 
 
-$2a$10$hPirNesLXP5AaJWj2t.ZROmuRIBl0sOvCWNKi7jJvih6Wa4MqXdPu
 
 
-SELECT * from dbo.clientes_registro cr 
-where 1=1
-and cr.cedula = '13072211' 
-order by 1;
+/******* CLIENTES ******/
 
---TRUNCATE table dbo.clientes_registro ;
-
-
-3002002001T02
-
-
+--POSTMAN
 UPDATE dbo.clientes_registro 
-set correo = 'ivan.hernandez.coral11@gmail.com', 
-clave= '$2a$10$hPirNesLXP5AaJWj2t.ZROmuRIBl0sOvCWNKi7jJvih6Wa4MqXdPu',
+set 
+--correo = 'ivan.hernandez.coral11@gmail.com', 
+--clave= '$2a$10$O3jiJVKkdk/cUOTNndkW9egKXd23hc/Sd64GRFYCpAKEu.EpjywGm',
 direccion = 'dir',
-telefono = '22222',
-direccion_entrega = 'dir entrega',
-latitud = 'lt',
-cedula = '130722111'
-where cedula = '13072211';
+--telefono = '22222',
+--direccion_entrega = 'dir entrega',
+--latitud = 'lt',
+cedula = '13072207'
+where cedula = '13072207';
 
-
-
-
-
-DELETE from dbo.clientes_registro where cedula = 'c';
 
 
 ALTER TABLE [dbo].[clientes_registro] ALTER COLUMN clave varchar(400);
 
 
 
-SD618680-->sd
 
+TRUNCATE table dbo.clientes_registro ;
+TRUNCATE table pedido_encabezado;
+TRUNCATE table pedido_detalle;
+
+--
+
+SELECT *
+from dbo.clientes_registro 
+;
+
+
+
+/******* PEDIDOS ******/
+SELECT * 
+from dbo.pedido_encabezado p
+inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
+;
+
+SELECT *
+from pedido_encabezado p
+--where p.nro_pedido = '1010'
+;
+
+
+SELECT * 
+from pedido_detalle pd
+;
+
+
+
+--Producto al cual le colocamos especificaciones y rayas para separar nombre de la descripcion
+--3002002001T02
+
+
+
+
+
+
+
+
+
+ /********************************************************************************************************************
+ * 
+ * PENDIENTES
+ * 
+ ********************************************************************************************************************/
 cedula); --ruc
 nombre);
 provincia);
@@ -128,60 +157,6 @@ latitud
 longitud
 estado
 
-0 !== lstPedidos.length ?
-
-
-TRUNCATE table pedido_encabezado;
-TRUNCATE table pedido_detalle;
-
-SELECT MAX(CAST(nro_pedido AS numeric)) from pedido_encabezado;
-
-SELECT * 
-from dbo.pedido_encabezado p
-inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
-;
-
-SELECT *
-from pedido_encabezado p
---where p.nro_pedido = '1010'
-;
-
-
-SELECT * 
-from pedido_detalle pd
-;
-
-SELECT  
-pd.nro_pedido, pd.secuencia, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as cod_articulo, pd.cantidad, pd.precio_venta, pd.iva, pd.detalle
-from dbo.articulos a
-inner join pedido_detalle pd on pd.cod_articulo = a.codigo
-where 1=1
-and
-order by 1 desc
-;
-
-
---Producto al cual le colocamos especificaciones y rayas para separar nombre de la descripcion
-3002002001T02
-3002002001T02
-
-
-SELECT * from dbo.articulos a where a.codigo like '%3002002001T02%';
-
-
-SELECT * from dbo.factura_encabezado fe;
-
-
-SELECT * from dbo.facturas_pendientes fp;
-
-SELECT * from dbo.factura_detalle fd 
---where fd.codigo like '%3002002001T02%'
-;
-
-
-
-
-
 
 /* Validar bien si no tengo q mirar las tablas para nada
 SELECT *
@@ -196,20 +171,6 @@ where 1=1
 and codigo in (2500, 2503)
 ;
 */
-
-SELECT * from dbo.parroquias p ;
-
-
-imbabura--> ibarra--> zuleta
-
-
-
-
-SD622967 -> caso sp
-
-
-
-
 
 
 
@@ -290,7 +251,6 @@ UPDATE dbo.articulos set stock = 18 where codigo = '3007002002T18M';
 
 
 
-if('S' = descodificado, RGB(255,0,0),Black())
 
 
  /********************************************************************************************************************
@@ -336,35 +296,3 @@ from dbo.pedido_encabezado p
 inner join dbo.pedido_detalle pd on pd.nro_pedido = p.nro_pedido
 ;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-select
-        cliente0_.cedula as cedula1_1_,
-        cliente0_.clave as clave2_1_,
-        cliente0_.codciudad as codciuda3_1_,
-        cliente0_.codprovincia as codprovi4_1_,
-        cliente0_.correo as correo5_1_,
-        cliente0_.direccion as direccio6_1_,
-        cliente0_.direccion_entrega as direccio7_1_,
-        cliente0_.estado as estado8_1_,
-        cliente0_.fecha as fecha9_1_,
-        cliente0_.latitud as latitud10_1_,
-        cliente0_.longitud as longitu11_1_,
-        cliente0_.nombres as nombres12_1_,
-        cliente0_.telefono as telefon13_1_ 
-    from
-        dbo.clientes_registro cliente0_ 
-    --where cliente0_.correo='1' and cliente0_.clave='pandi'
-;

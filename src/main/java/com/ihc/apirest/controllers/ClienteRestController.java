@@ -37,10 +37,8 @@ public class ClienteRestController
    */
   // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
   @PutMapping("/clientes/datos_acceso")
-  public ResponseEntity<Integer> actualizarDatosAccesoCliente(@RequestBody Cliente cliente)
+  public ResponseEntity<Cliente> actualizarDatosAccesoCliente(@RequestBody Cliente cliente)
   {
-    Integer clienteActualizado = 0;
-
     try 
     {  
       Cliente clienteBD = clienteService.getClienteByCorreo(cliente.getCorreo());
@@ -48,6 +46,9 @@ public class ClienteRestController
 
       if(null != clienteBD && bcrypt.matches(cliente.getClaveIngresada(), clienteBD.getClave()))
       {
+        //Se hace set de la clave por temas de sql update
+        cliente.setClave(clienteBD.getClave());
+
         if(null != cliente.getNuevaClave())
         {
           cliente.setClave(bcrypt.encode(cliente.getNuevaClave()));
@@ -55,19 +56,27 @@ public class ClienteRestController
 
         if(null != cliente.getNuevoCorreo())
         {
+          if(clienteService.existeClienteByCorreo(cliente))
+          {
+            return new ResponseEntity<Cliente>(HttpStatus.CREATED);
+          }
           cliente.setCorreo(cliente.getNuevoCorreo());
         }
 
-        clienteActualizado = clienteService.actualizarDatosAccesoCliente(cliente);
+        clienteService.actualizarDatosAccesoCliente(cliente);
 
-        return new ResponseEntity<Integer>(clienteActualizado, HttpStatus.OK);
+        cliente.setClave(null);
+        cliente.setNuevoCorreo(null);
+        cliente.setNuevaClave(null);
+        
+        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
       }
 
-      return new ResponseEntity<Integer>(clienteActualizado, HttpStatus.NO_CONTENT);
+      return new ResponseEntity<Cliente>(clienteBD, HttpStatus.NO_CONTENT);
     } 
     catch (Exception e) 
     {
-      return new ResponseEntity<Integer>(clienteActualizado, HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

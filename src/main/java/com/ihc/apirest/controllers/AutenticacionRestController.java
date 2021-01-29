@@ -85,7 +85,12 @@ public class AutenticacionRestController
       cliente.setClave(bcrypt.encode(cliente.getClave()));
 
       //Este metodo creará un usuario en BD para la app de [mi-bario-app]
-      Cliente clienteBD = clienteService.registrarCliente(cliente); 
+      Cliente clienteBD = clienteService.registrarCliente(cliente);
+      
+      String jwt = jwtService.generarToken(clienteBD);
+
+      clienteBD.setToken(jwt);
+      clienteBD.setClave(null);
 
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     } 
@@ -111,12 +116,13 @@ public class AutenticacionRestController
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getCorreo(), cliente.getClave()));
         
       SecurityContextHolder.getContext().setAuthentication(authentication);
-
-      String jwt = jwtService.generarToken(authentication);
-
+      
       Cliente clienteBD = (Cliente) authentication.getPrincipal();
 
+      String jwt = jwtService.generarToken(clienteBD);
+
       clienteBD.setToken(jwt);
+      clienteBD.setClave(null);
       
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     }

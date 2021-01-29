@@ -25,7 +25,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>
   List<Pedido> findByCliente(Integer cliente);
 
 
-  // @Query(value = "SELECT MAX(CAST(nro_pedido AS numeric)) from pedido_encabezado", nativeQuery = true)
   @Query(value = "SELECT MAX(nro_pedido) from dbo.pedido_encabezado", nativeQuery = true)
   String maxNroPedido();
 }

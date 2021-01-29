@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ihc.apirest.security.Rol;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(schema = "dbo", name = "clientes_registro")
-public class Cliente implements UserDetails 
+public class Cliente implements UserDetails
 {
   private static final long serialVersionUID = 1L;
   @Id
@@ -74,6 +75,7 @@ public class Cliente implements UserDetails
 
 
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() 
 	{
@@ -83,36 +85,42 @@ public class Cliente implements UserDetails
 		return lstRoles;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getPassword() 
 	{
 		return clave;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getUsername() 
 	{
 		return correo;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() 
 	{
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() 
 	{
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() 
 	{
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() 
 	{

@@ -35,7 +35,7 @@ public class ArticuloRestController
    * @return
    */
   @GetMapping(value = "/articulos")
-  public ResponseEntity<List<Articulo>> getAllCategoriasArticulos() 
+  public ResponseEntity<List<Articulo>> getAllArticulos() 
   {
     try 
     {
@@ -69,7 +69,6 @@ public class ArticuloRestController
       }
 
       return new ResponseEntity<List<Articulo>>(new ArrayList<Articulo>(mapArticulos.values()), HttpStatus.OK);
-      // return new ResponseEntity<List<Articulo>>(lstArticulos, HttpStatus.OK);
     } 
     catch (Exception e) 
     {
