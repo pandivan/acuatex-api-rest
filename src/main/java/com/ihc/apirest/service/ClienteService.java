@@ -52,11 +52,11 @@ public class ClienteService
 
   /**
    * Método que permite validar si un correo existe en bd
-   * @param cliente que contiene el correo a valdiar
+   * @param correo a valdiar
    * @return true si existe el correo, en caso contrario false
    */
-  public boolean existeClienteByCorreo(Cliente cliente) 
+  public boolean existeClienteByCorreo(String correo) 
   {
-    return clienteRepository.existsByCorreo(cliente.getNuevoCorreo());
+    return clienteRepository.existsByCorreo(correo);
   }
 }

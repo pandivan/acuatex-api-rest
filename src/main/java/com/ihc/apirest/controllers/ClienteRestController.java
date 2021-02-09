@@ -2,6 +2,7 @@ package com.ihc.apirest.controllers;
 
 import com.ihc.apirest.models.Cliente;
 import com.ihc.apirest.service.ClienteService;
+import com.ihc.apirest.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public class ClienteRestController
   ClienteService clienteService;
 
   @Autowired
+  JwtService jwtService;
+
+  @Autowired
   BCryptPasswordEncoder bcrypt;
 
   
@@ -41,13 +45,17 @@ public class ClienteRestController
   {
     try 
     {  
-      Cliente clienteBD = clienteService.getClienteByCorreo(cliente.getCorreo());
+      String correo = jwtService.getUserNameFromToken(cliente.getToken());
+
+      Cliente clienteBD = clienteService.getClienteByCorreo(correo);
 
 
       if(null != clienteBD && bcrypt.matches(cliente.getClaveIngresada(), clienteBD.getClave()))
       {
         //Se hace set de la clave por temas de sql update
         cliente.setClave(clienteBD.getClave());
+        cliente.setCorreo(clienteBD.getCorreo());
+        cliente.setCedula(clienteBD.getCedula());
 
         if(null != cliente.getNuevaClave())
         {
@@ -56,23 +64,28 @@ public class ClienteRestController
 
         if(null != cliente.getNuevoCorreo())
         {
-          if(clienteService.existeClienteByCorreo(cliente))
+          if(clienteService.existeClienteByCorreo(cliente.getNuevoCorreo()))
           {
             return new ResponseEntity<Cliente>(HttpStatus.CREATED);
           }
           cliente.setCorreo(cliente.getNuevoCorreo());
+
+          //Al actualizar el correo estamos cambiando el user name de la aplicación, recordar que este user name esta impreso en el token, es por eso que debemos genear un token nuevo
+          String token = jwtService.generarToken(cliente);
+
+          cliente.setToken(token);
         }
 
         clienteService.actualizarDatosAccesoCliente(cliente);
 
         cliente.setClave(null);
-        cliente.setNuevoCorreo(null);
-        cliente.setNuevaClave(null);
+        cliente.setCedula(null);
+
         
         return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
       }
 
-      return new ResponseEntity<Cliente>(clienteBD, HttpStatus.NO_CONTENT);
+      return new ResponseEntity<Cliente>(HttpStatus.NO_CONTENT);
     } 
     catch (Exception e) 
     {

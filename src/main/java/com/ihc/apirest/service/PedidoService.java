@@ -52,11 +52,11 @@ public class PedidoService
 
   /**
    * Método que permite obtener todos los pedidos según el cliente
-   * @param cedula del cliente
+   * @param correo del cliente
    * @return Listado de pedidos del cliente
    */
-  public List<Pedido> getAllPedidosByCliente(Integer cedula)
+  public List<Pedido> getAllPedidosByCorreo(String correo)
   {
-    return pedidoRepository.findByCliente(cedula);
+    return pedidoRepository.findByCorreo(correo);
   }
 }

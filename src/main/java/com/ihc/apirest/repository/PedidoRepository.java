@@ -22,7 +22,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>
   void actualizarEstadoPedido(Integer estado, String nroPedido, Integer cliente);
 
 
-  List<Pedido> findByCliente(Integer cliente);
+  List<Pedido> findByCorreo(String correo);
 
 
   @Query(value = "SELECT MAX(nro_pedido) from dbo.pedido_encabezado", nativeQuery = true)

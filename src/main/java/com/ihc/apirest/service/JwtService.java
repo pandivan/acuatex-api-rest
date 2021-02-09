@@ -42,8 +42,8 @@ public class JwtService
                         .setSubject(cliente.getUsername())
                         .claim(AUTHORITIES, authorities)
                         .setIssuedAt(new Date())
-                        .setExpiration(new Date(System.currentTimeMillis() + 10000))
-                        // .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                        // .setExpiration(new Date(System.currentTimeMillis() + 10000))
+                        .setExpiration(new Date(new Date().getTime() + expiration * 1000))
                         .signWith(SignatureAlgorithm.HS512, secretKey)
                         .compact();
   }

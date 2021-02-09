@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ihc.apirest.models.Pedido;
 import com.ihc.apirest.models.PedidoDetalle;
+import com.ihc.apirest.service.JwtService;
 import com.ihc.apirest.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class PedidoRestController
 {
   @Autowired
   PedidoService pedidoService;
+
+  @Autowired
+  JwtService jwtService;
 
   static final Integer ID_ESTADO_PENDIENTE = 100;
   static final Integer ID_ESTADO_ACEPTADO = 101;
@@ -112,16 +116,18 @@ public class PedidoRestController
 
   /**
    * Método que permite obtener todos los pedidos según el cliente
-   * @param cedula del cliente
+   * @param token del cliente
    * @return Listado de pedidos del cliente
    */
   // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
-  @GetMapping(value = "/pedidos/{cedula}")
-  public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("cedula") Integer cedula) 
+  @GetMapping(value = "/pedidos/{token}")
+  public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("token") String token) 
   {
     try
     {
-      List<Pedido> lstPedidos = pedidoService.getAllPedidosByCliente(cedula);
+      String correo = jwtService.getUserNameFromToken(token);
+
+      List<Pedido> lstPedidos = pedidoService.getAllPedidosByCorreo(correo);
 
       return new ResponseEntity<List<Pedido>>(lstPedidos, HttpStatus.OK);
     }

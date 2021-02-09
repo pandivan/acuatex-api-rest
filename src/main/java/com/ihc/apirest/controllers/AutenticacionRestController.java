@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,16 +54,16 @@ public class AutenticacionRestController
    * @return Cliente creado
    */
   @PostMapping(value="/signup")
-  public ResponseEntity<Cliente> signup(@RequestBody Cliente cliente)
+  public ResponseEntity<String> signup(@RequestBody Cliente cliente)
   {
     try 
     {
-      Cliente clienteExistente = clienteService.getClienteByCorreo(cliente.getCorreo());
+      boolean isExistenteCliente = clienteService.existeClienteByCorreo(cliente.getCorreo());
 
       //Se valida que el correo del cliente no este registrado en la plataforma
-      if(null != clienteExistente)
+      if(isExistenteCliente)
       {
-        return new ResponseEntity<Cliente>(clienteExistente, HttpStatus.CREATED);
+        return new ResponseEntity<String>(HttpStatus.CREATED);
       }
 
       /**
@@ -87,16 +90,13 @@ public class AutenticacionRestController
       //Este metodo creará un usuario en BD para la app de [mi-bario-app]
       Cliente clienteBD = clienteService.registrarCliente(cliente);
       
-      String jwt = jwtService.generarToken(clienteBD);
+      String token = jwtService.generarToken(clienteBD);
 
-      clienteBD.setToken(jwt);
-      clienteBD.setClave(null);
-
-      return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
+      return new ResponseEntity<String>(token, HttpStatus.OK);
     } 
     catch (Exception e) 
     {
-      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -108,27 +108,55 @@ public class AutenticacionRestController
    * @return Cliente encontrado
    */
   @PostMapping(value = "/login")
-  public ResponseEntity<Cliente> login(@RequestBody Cliente cliente) 
+  public ResponseEntity<String> login(@RequestBody Cliente cliente) 
   {
     try
     {
       //El correo es el username de la aplicacion
+      //Se valida autenticación por medio de correo y clave
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getCorreo(), cliente.getClave()));
         
       SecurityContextHolder.getContext().setAuthentication(authentication);
       
       Cliente clienteBD = (Cliente) authentication.getPrincipal();
 
-      String jwt = jwtService.generarToken(clienteBD);
+      String token = jwtService.generarToken(clienteBD);
 
-      clienteBD.setToken(jwt);
+      return new ResponseEntity<String>(token, HttpStatus.OK);
+    }
+    catch (BadCredentialsException bce) 
+    {
+      return new ResponseEntity<String>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+    }
+    catch (Exception e) 
+    {
+      return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite obtener el cliente a partir del token
+   * @param token que contiene el user name
+   * @return Cliente encontrado
+   */
+  @GetMapping(value = "/info/{token}")
+  public ResponseEntity<Cliente> getCliente(@PathVariable("token") String token) 
+  {
+    try
+    {
+      String correo = jwtService.getUserNameFromToken(token);
+
+      Cliente clienteBD = clienteService.getClienteByCorreo(correo);
+
       clienteBD.setClave(null);
       
       return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
     }
     catch (Exception e) 
     {
-      return new ResponseEntity<Cliente>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
