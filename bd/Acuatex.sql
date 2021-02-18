@@ -75,7 +75,7 @@ where cedula = '13072207';
 
 ALTER TABLE [dbo].[clientes_registro] ALTER COLUMN clave varchar(400);
 
-
+admon_ibc.UTL_LOG_INF_ESPECIAL
 
 
 TRUNCATE table dbo.clientes_registro ;

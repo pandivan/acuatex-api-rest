@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 
 
 
@@ -78,10 +81,14 @@ public class ClienteRestController
 
         clienteService.actualizarDatosAccesoCliente(cliente);
 
+        //Se quitan datos sensibles del usuario por seguridad
+        cliente.setClaveIngresada(null);
+        cliente.setNuevaClave(null);
         cliente.setClave(null);
         cliente.setCedula(null);
+        cliente.setNuevoCorreo(null);
 
-        
+        //Se retorna el cliente con el nuevo token
         return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
       }
 
@@ -113,6 +120,56 @@ public class ClienteRestController
     catch (Exception e) 
     {
       return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite obtener el cliente a partir del token
+   * @param token que contiene el user name
+   * @return Cliente encontrado
+   */
+  @GetMapping(value = "/clientes")
+  public ResponseEntity<Cliente> getCliente(@RequestHeader("Authorization") String headerAuthorization) 
+  {
+    try
+    {
+      String token = jwtService.getToken(headerAuthorization);
+      String correo = jwtService.getUserNameFromToken(token);
+
+      Cliente clienteBD = clienteService.getClienteByCorreo(correo);
+
+      clienteBD.setClave(null);
+      
+      return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
+    }
+    catch (Exception e) 
+    {
+      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite obtener el correo del cliente a partir del token
+   * @param token que contiene el user name (correo)
+   * @return Correo del cliente
+   */
+  @GetMapping(value = "/clientes/mail")
+  public ResponseEntity<String> getCorreoCliente(@RequestHeader("Authorization") String headerAuthorization) 
+  {
+    try
+    {
+      String token = jwtService.getToken(headerAuthorization);
+      String correo = jwtService.getUserNameFromToken(token);
+      
+      return new ResponseEntity<String>(correo, HttpStatus.OK);
+    }
+    catch (Exception e) 
+    {
+      return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

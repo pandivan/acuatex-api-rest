@@ -42,8 +42,8 @@ public class JwtService
                         .setSubject(cliente.getUsername())
                         .claim(AUTHORITIES, authorities)
                         .setIssuedAt(new Date())
-                        // .setExpiration(new Date(System.currentTimeMillis() + 10000))
-                        .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                        .setExpiration(new Date(System.currentTimeMillis() + 10000))
+                        // .setExpiration(new Date(new Date().getTime() + expiration * 1000))
                         .signWith(SignatureAlgorithm.HS512, secretKey)
                         .compact();
   }
@@ -97,5 +97,19 @@ public class JwtService
       System.out.println("fail en la firma");
     }
     return false;
+  }
+
+
+  /**
+   * Método que permite obtener el token a partir del header
+   * @param header contiene atributo authorization
+   * @return token
+   */
+  public String getToken(String headerAuthorization) 
+  {
+    if (null != headerAuthorization && headerAuthorization.startsWith("Bearer"))
+      return headerAuthorization.replace("Bearer ", "");
+
+    return null;
   }
 }

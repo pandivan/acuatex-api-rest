@@ -16,8 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -131,32 +130,6 @@ public class AutenticacionRestController
     catch (Exception e) 
     {
       return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-
-
-  /**
-   * Método que permite obtener el cliente a partir del token
-   * @param token que contiene el user name
-   * @return Cliente encontrado
-   */
-  @GetMapping(value = "/info/{token}")
-  public ResponseEntity<Cliente> getCliente(@PathVariable("token") String token) 
-  {
-    try
-    {
-      String correo = jwtService.getUserNameFromToken(token);
-
-      Cliente clienteBD = clienteService.getClienteByCorreo(correo);
-
-      clienteBD.setClave(null);
-      
-      return new ResponseEntity<Cliente>(clienteBD, HttpStatus.OK);
-    }
-    catch (Exception e) 
-    {
-      return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
