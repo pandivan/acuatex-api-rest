@@ -40,7 +40,9 @@ where 1=1
 --and cod_listaprecios = 01
 ;
 
-
+SELECT *
+from dbo.articulos 
+;
 
 
 
@@ -71,6 +73,11 @@ direccion = 'dir',
 cedula = '13072207'
 where cedula = '13072207';
 
+
+http://localhost:3000/usuario/cuenta/datos-acceso
+http://localhost:3000/usuario/informacion-personal
+http://localhost:3000/ajustes
+http://localhost:3000/transaccion
 
 
 ALTER TABLE [dbo].[clientes_registro] ALTER COLUMN clave varchar(400);

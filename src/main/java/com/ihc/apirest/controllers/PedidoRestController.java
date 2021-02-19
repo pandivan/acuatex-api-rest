@@ -13,10 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -116,15 +116,16 @@ public class PedidoRestController
 
   /**
    * Método que permite obtener todos los pedidos según el cliente
-   * @param token del cliente
+   * @param headerAuthorization contiene el token
    * @return Listado de pedidos del cliente
    */
   // @PreAuthorize("hasRole('ROLE_ACUATEX_CLIENTE')")
-  @GetMapping(value = "/pedidos/{token}")
-  public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@PathVariable("token") String token) 
+  @GetMapping(value = "/pedidos")
+  public ResponseEntity<List<Pedido>> getAllPedidosByCliente(@RequestHeader("Authorization") String headerAuthorization) 
   {
     try
     {
+      String token = jwtService.getToken(headerAuthorization);
       String correo = jwtService.getUserNameFromToken(token);
 
       List<Pedido> lstPedidos = pedidoService.getAllPedidosByCorreo(correo);

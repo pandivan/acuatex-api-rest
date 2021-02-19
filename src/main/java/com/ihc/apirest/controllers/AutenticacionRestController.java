@@ -16,7 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -130,6 +130,25 @@ public class AutenticacionRestController
     catch (Exception e) 
     {
       return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
+  /**
+   * Método que permite validar el token
+   * @return True si es valido, en caso contrario False
+   */
+  @GetMapping(value = "/info")
+  public ResponseEntity<Boolean> validarToken() 
+  {
+    try
+    {
+      return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    }
+    catch (Exception e) 
+    {
+      return new ResponseEntity<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

@@ -154,7 +154,7 @@ public class ClienteRestController
 
   /**
    * Método que permite obtener el correo del cliente a partir del token
-   * @param token que contiene el user name (correo)
+   * @param headerAuthorization contiene el token
    * @return Correo del cliente
    */
   @GetMapping(value = "/clientes/mail")
