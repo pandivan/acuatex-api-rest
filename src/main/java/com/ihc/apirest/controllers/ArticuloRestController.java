@@ -43,28 +43,30 @@ public class ArticuloRestController
 
       List<Articulo> lstArticulos = articuloService.getAllArticulos();
 
-      for (Articulo articulo : lstArticulos) 
+      for (Articulo articuloBD : lstArticulos) 
       {
-        if(mapArticulos.containsKey(articulo.getCodigoArticulo()))
+        //Si el articulo existe obtenemos unicamente el campo talla
+        if(mapArticulos.containsKey(articuloBD.getCodigoArticulo()))
         {
-          Articulo articuloBD = mapArticulos.get(articulo.getCodigoArticulo());
+          Articulo articulo = mapArticulos.get(articuloBD.getCodigoArticulo());
 
-          articuloBD.getLstTallas().add(articulo.getTalla());
+          articulo.getLstTallas().add(articuloBD.getTalla());
 
-          mapArticulos.put(articulo.getCodigoArticulo(), articuloBD);
+          mapArticulos.put(articuloBD.getCodigoArticulo(), articulo);
         }
         else
         {
+          //Se construye el listado de tallas para cada articulo
           Set<String> lstTallas = new HashSet<String>();
-          lstTallas.add(articulo.getTalla());
+          lstTallas.add(articuloBD.getTalla());
           
-          articulo.setTalla(null);
-          articulo.setLstTallas(lstTallas);
+          articuloBD.setTalla(null);
+          articuloBD.setLstTallas(lstTallas);
 
-          articulo.setCodigo(articulo.getCodigoArticulo());
-          articulo.setCodigoArticulo(null);
+          articuloBD.setCodigo(articuloBD.getCodigoArticulo());
+          articuloBD.setCodigoArticulo(null);
 
-          mapArticulos.put(articulo.getCodigo(), articulo);
+          mapArticulos.put(articuloBD.getCodigo(), articuloBD);
         }
       }
 
