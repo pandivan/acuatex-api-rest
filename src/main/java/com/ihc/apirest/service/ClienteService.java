@@ -51,6 +51,17 @@ public class ClienteService
 
 
   /**
+   * Método que permite restaurar temporalmente la clave de un cliente en BD
+   * @param cliente a restaurar clave
+   * @return Cliente registrado
+   */
+  public Integer restaurarClave(String clave, String correo)
+  {
+    return clienteRepository.restaurarClave(clave, correo);
+  }
+
+
+  /**
    * Método que permite validar si un correo existe en bd
    * @param correo a valdiar
    * @return true si existe el correo, en caso contrario false

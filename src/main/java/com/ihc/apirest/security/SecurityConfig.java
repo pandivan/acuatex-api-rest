@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
           .antMatchers("/v1/login").permitAll()
           .antMatchers("/v1/articulos").permitAll()
           .antMatchers("/v1/ciudades").permitAll()
+          .antMatchers("/v1/restaurar").permitAll()
           .anyRequest().authenticated()
           .and()
           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -98,10 +98,15 @@ from dbo.clientes_registro
 
 
 
+
+
+
 /******* PEDIDOS ******/
 SELECT * 
 from dbo.pedido_encabezado p
 inner join pedido_detalle pd on pd.nro_pedido = p.nro_pedido
+where 1=1
+and p.cliente = '13072207'
 ;
 
 SELECT *
@@ -140,7 +145,8 @@ where a.codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T0
 --and subgrupo = 'CAMISETAS DE NIÑO'
 order by subgrupo 
 ;
-
+https://www.zara.com/co/es/pantalón-masculino-full-length-p07385169.html?v1=94353190&v2=1712675
+https://www.zara.com/co/es/blazer-recta-bolsillos-p02010708.html?v1=100624056&v2=1712675
 
 SELECT pa.cod_articulo, pa.precio, (pa.precio * 3) precio_web, ROUND(pa.precio, 2) redondeo_ori, (ROUND(pa.precio, 2) * 3) redondeo
 from dbo.precios_articulos pa 
@@ -192,8 +198,7 @@ direccion); --direccion entrega
   
 --Por implementar en la tabla dbo.clientes_registro
 sexo = F-M
-politicas = 1-0
-pais = 
+politicas = 1-0 
 fechaNacimiento = ''
 
 
@@ -211,6 +216,8 @@ latitud
 longitud
 estado
 
+
+SELECT * from dbo.clientes_registro;
 
 /* Validar bien si no tengo q mirar las tablas para nada
 SELECT *
@@ -312,11 +319,11 @@ UPDATE dbo.articulos set stock = 18 where codigo = '3007002002T18M';
  * HECHOS PEDIDOS
  * 
  ********************************************************************************************************************/
-SELECT p.nro_pedido, p.estado, p.cliente 
+SELECT p.* 
 from pedido_encabezado p
 where 1=1
 --and cliente = '13072207'
-and nro_pedido = '1010'
+--and nro_pedido = '1010'
 order by p.cliente ;
 
 

@@ -19,6 +19,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>
     Integer actualizarDatosAccesoCliente(String correo, String clave, String cedula);
 
 
+    @Modifying
+    @Query("update Cliente c SET c.clave= ?1 where c.correo = ?2")
+    Integer restaurarClave(String clave, String correo);
+
+
     boolean existsByCedulaAndClave(String cedula, String clave);
 
 
