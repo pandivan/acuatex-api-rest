@@ -24,10 +24,12 @@ public class Articulo
 {
   @Id
 	private String codigo;
-	private String codigoArticulo;
+	private String codigoTalla;
 	private String grupo;
 	@Transient
 	private String nombre;
+	private String umedida;
+	private String iva;
 	@Transient
 	private String descripcion;
 	private int cantidad;

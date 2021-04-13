@@ -26,4 +26,15 @@ public class ArticuloService
   {
     return articuloRepository.getAllArticulos();
   }
+
+
+
+  /**
+   * Método que permite obtener el iva
+   * @return IVA
+   */
+  public String getIvaArticulos() 
+  {
+    return articuloRepository.getIvaArticulos();
+  }
 }
