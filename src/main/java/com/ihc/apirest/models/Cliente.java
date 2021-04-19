@@ -44,11 +44,14 @@ public class Cliente implements UserDetails
 	private String telefono;
 	@Column(name = "clave", updatable = false)
 	private String clave;
+	@Column(name = "fecha", updatable = false)
 	private Date fecha;
 	private String direccionEntrega;
 	private String latitud;
 	private String longitud;
 	private int estado;
+	private String sexo;
+	private Date fechaNacimiento;
 
 	@Transient
 	private String claveIngresada;

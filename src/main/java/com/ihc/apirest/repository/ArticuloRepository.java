@@ -24,6 +24,6 @@ public interface ArticuloRepository extends JpaRepository<Articulo, String>
   List<Articulo> getAllArticulos();
 
 
-  @Query(value = "SELECT p.valor FROM dbo.parametros p where p.codigo = 'ParamPorcIva'", nativeQuery = true)
+  @Query(value = "SELECT ROUND((cast(p.valor as float) / 100), 2) valor FROM dbo.parametros p where p.codigo = 'ParamPorcIva'", nativeQuery = true)
   String getIvaArticulos();
 }

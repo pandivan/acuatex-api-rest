@@ -43,9 +43,9 @@ public class ArticuloRestController
 
       List<Articulo> lstArticulos = articuloService.getAllArticulos();
 
-      Double porcentajeIva = getIvaArticulos(articuloService.getIvaArticulos());
+      String iva = articuloService.getIvaArticulos();
 
-
+      
       for (Articulo articuloBD : lstArticulos) 
       {
         //Si el articulo existe obtenemos unicamente el campo talla
@@ -69,14 +69,16 @@ public class ArticuloRestController
           articuloBD.setCodigo(articuloBD.getCodigoTalla());
           articuloBD.setCodigoTalla(null);
 
+          
           //Se valida si se debe aplicar iva, 1 aplica, 0 no aplica
           if("1".equals(articuloBD.getIva()))
           {
-            Double iva = (articuloBD.getPrecio() * porcentajeIva);
-            double precio = articuloBD.getPrecio() + iva;
-  
-            articuloBD.setPrecio(precio);
-            articuloBD.setIva(iva.toString());
+            articuloBD.setIva(iva);
+          }
+          else
+          {
+            //Se hace set en 1 con el objetivo de no alterar la operacion IVA a la hora de generar el pedido en la WEB
+            articuloBD.setIva("1");
           }
 
           mapArticulos.put(articuloBD.getCodigo(), articuloBD);
@@ -89,29 +91,5 @@ public class ArticuloRestController
     {
       return new ResponseEntity<List<Articulo>>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-
-
-  /**
-   * Método que permite calcular el ivan que se aplicara a los articulos
-   * @return porcentaje IVA
-   */
-  private Double getIvaArticulos(String ivaBD) 
-  {
-    double porcentajeIva = (double) 0;
-
-    try 
-    {
-      if(null != ivaBD)
-      {
-        porcentajeIva = Double.parseDouble(ivaBD) / 100;
-      }
-    } 
-    catch (NumberFormatException e) 
-    {
-      //Error controlado en caso de no poder convertir el valor del iva a double
-    }
-    return porcentajeIva;
   }
 }

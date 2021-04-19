@@ -80,7 +80,14 @@ http://localhost:3000/transaccion
 
 ALTER TABLE [dbo].[clientes_registro] ALTER COLUMN clave varchar(400);
 
+ALTER TABLE [dbo].[clientes_registro] ADD sexo varchar(1);
+ALTER TABLE [dbo].[clientes_registro] ADD fecha_nacimiento datetime;
 
+
+--Please enter 6 - 20 characters (A-Z, a-z, 0-9 only)
+
+politicas = 1-0 
+fechaNacimiento = ''
 
 
 TRUNCATE table dbo.clientes_registro ;
@@ -92,8 +99,10 @@ TRUNCATE table pedido_detalle;
 
 SELECT *
 from dbo.clientes_registro 
+where correo like '%carden%'
 ;
 
+Cutisoamor*123456789012345678901234567890123456789
 
 
 
@@ -115,9 +124,11 @@ where 1 = 1
 ;
 
 
-SELECT * 
+SELECT pd.*, (pd.precio_venta * pd.cantidad * 0.12) iva2 
 from pedido_detalle pd
---where pd.cod_articulo = '3007002001T24'
+where 1=1
+--and pd.cod_articulo = '3007002001T24'
+--and pd.nro_pedido = '000000980000003'
 ;
 
 
@@ -126,8 +137,12 @@ from dbo.articulos a
 inner join dbo.precios_articulos pa on pa.cod_articulo = a.codigo 
 where 1=1
 and pa.cod_listaprecios = 01
-and a.codigo in ('3007002001T24')
+--and iva <> 1
+--and a.codigo in ('3007002001T24')
 ;
+
+
+IVA JHOANA = (6 * 8.9285) * 0.12 = 6,42
 
 Precio = 8.9286
 
@@ -140,12 +155,7 @@ PrecioVenta = 8.9286 + 1.071 = 10.0016
 
 
 
---10.0016
-SELECT 8.9286 * 0.12;
-
-SELECT p.valor FROM dbo.parametros p where p.codigo = 'ParamPorcIva';
-
-
+SELECT ROUND((cast(p.valor as float) / 100), 2) valor FROM dbo.parametros p where p.codigo = 'ParamPorcIva';
 
 
 
@@ -167,28 +177,9 @@ where codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T04'
 
 
 
-SELECT a.detalle, 
----detalle+'-Descripción del producto '+detalle+'-Producto elaborado con amor y con alta calidad, tela fria, absorve el sudor y dura mil lavadas' nuevo, 
-a.*
-from dbo.articulos a 
---where a.codigo like '%3002001003T08%'
-where a.codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T04','3003001005T04','3005004044T18','3005004045T10','3005004047T3','3007002001T12M','3007002001T18M','3007002001T24','3007002001T6-9M','3007002002T12M','3012004001T1','3012005002TL','3012008001TXL','3008007001T14','3004001054TS','3004001058TXL','3005006028T9','3005005086T24','3012008002TXL','3007002066T18','3007002066T12','3007002066T18','3007002066T24','3007002067T12','3007002002T18M','3007002002T24','3007002067T18','3007002067T24','3007002067T6-9','3012005002TM','3012005002TS','3012005002TXL','3012008001TL','3012008001TM','3012008001TS','3012008002TL','3012008002TM','3012008002TS','3004001054TM','3004001054TS','3004001058TL','3004001058TM','3004001058TS') 
---and subgrupo = 'CAMISETAS DE NIÑO'
-order by subgrupo 
-;
-https://www.zara.com/co/es/pantalón-masculino-full-length-p07385169.html?v1=94353190&v2=1712675
-https://www.zara.com/co/es/blazer-recta-bolsillos-p02010708.html?v1=100624056&v2=1712675
-
-SELECT pa.cod_articulo, pa.precio, (pa.precio * 3) precio_web, ROUND(pa.precio, 2) redondeo_ori, (ROUND(pa.precio, 2) * 3) redondeo
-from dbo.precios_articulos pa 
-where pa.cod_articulo in (SELECT pd.cod_articulo from pedido_detalle pd)
-and pa.cod_listaprecios ='01'
-;
 
 
-
-SELECT a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_articulo, a.grupo, a.detalle, 1 as cantidad, ROUND(pa.precio, 2) precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla 
-, SUBSTRING(a.detalle, 0, CHARINDEX('-', a.detalle))
+SELECT a.codigo, SUBSTRING(a.codigo, 0, CHARINDEX('T', a.codigo)+1) as codigo_talla, a.grupo, a.detalle, 1 as cantidad, ROUND(pa.precio, 2) precio, SUBSTRING(a.codigo, CHARINDEX('T', a.codigo)+1, 5) as talla, a.umedida, a.iva 
 from dbo.articulos a 
 inner join dbo.precios_articulos pa on pa.cod_articulo = a.codigo 
 where a.codigo in ('3002001001T04','3002001002T02','3002001003T08','3003001003T04','3003001005T04','3005004044T18','3005004045T10','3005004047T3','3007002001T12M','3007002001T18M','3007002001T24','3007002001T6-9M','3007002002T12M','3012004001T1','3012005002TL','3012008001TXL','3008007001T14','3004001054TS','3004001058TXL','3005006028T9','3005005086T24','3012008002TXL','3007002066T18','3007002066T12','3007002066T18','3007002066T24','3007002067T12','3007002002T18M','3007002002T24','3007002067T18','3007002067T24','3007002067T6-9','3012005002TM','3012005002TS','3012005002TXL','3012008001TL','3012008001TM','3012008001TS','3012008002TL','3012008002TM','3012008002TS','3004001054TM','3004001054TS','3004001058TL','3004001058TM','3004001058TS') 
@@ -233,19 +224,6 @@ politicas = 1-0
 fechaNacimiento = ''
 
 
-	cedula
-	nombres
-	codprovincia
-	codciudad
-	direccion
-	correo
-	telefono
-	clave
-fecha
-	direccion_entrega
-latitud
-longitud
-estado
 
 
 SELECT * from dbo.clientes_registro;

@@ -17,6 +17,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -136,7 +137,7 @@ public class AutenticacionRestController
 
       return new ResponseEntity<String>(token, HttpStatus.OK);
     }
-    catch (BadCredentialsException bce) 
+    catch (BadCredentialsException | UsernameNotFoundException bce) 
     {
       return new ResponseEntity<String>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
